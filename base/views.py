@@ -32,3 +32,6 @@ def registerPage(request):
 
 def home(request):
     return render(request, 'base/home.html')
+
+def healthScore(request):
+    return render(request, 'base/healthscore.html')

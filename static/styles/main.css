@@ -1,5 +1,74 @@
+/* General */
 * {
     text-align: center;
-    margin: auto;
+    margin: .25em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14pt;
 }
 
+h1 {
+    color: green;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 72pt;
+}
+
+h2 {
+    color: green;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 36pt;
+}
+
+div {
+}
+
+
+
+small {
+    color: grey;
+    font-size: 10pt;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+/* Landing page */
+.heart-logo {
+    width: 10%;
+}
+
+.landing-page-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    height: 80vh;
+    > a {
+        background-color: green;
+        color: white;
+        border-radius: 5px;
+        padding: 5px 10px;
+        text-decoration: none;
+    }
+}
+
+/* Login page */
+.login-register-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 65vh;
+}
+
+.google-apple-login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Home page */

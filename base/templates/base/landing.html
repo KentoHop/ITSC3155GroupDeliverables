@@ -7,18 +7,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NinerFit App</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'styles/main.css' %}">
+    <!-- Static files -->
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'styles/main.css' ? now 'U' %}">
+
 </head>
 <body>
-    <h1>NinerFit</h1>
-
-    <img>
+    
 
     <div class="landing-page-container">
-        <form action="">
-            <input type="button" value="Start">
-            <input type="button" value="Login/Register">
-        </form>
+        
+        <h1>NinerFit</h1>
+
+        <img class="heart-logo" src="{% static 'images/heart-logo.svg' %}">
+
+        <a href="{% url 'home' %}" class="button">Start</a>
+
+        <a href="{% url 'login' %}" class="button">Login/Register</a>
+        
     </div>
 </body>
 </html>

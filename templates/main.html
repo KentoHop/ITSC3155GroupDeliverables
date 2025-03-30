@@ -7,12 +7,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NinerFit App</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'styles/main.css' %}">
+    <!-- Static files -->
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'styles/main.css' ? now 'U' %}">
+
 </head>
 <body>
-    <h2>NinerFit</h2>
-    
+
     {% include 'navbar.html' %}
+    
 
     {% block content %}
 
