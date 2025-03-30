@@ -1,9 +1,10 @@
 /* General */
 * {
     text-align: center;
-    margin: .25em;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 14pt;
+    font-size: 13pt;
+    margin: 0;
+    padding: 0;
 }
 
 h1 {
@@ -15,13 +16,9 @@ h1 {
 h2 {
     color: green;
     font-family: Georgia, 'Times New Roman', Times, serif;
-    font-size: 36pt;
+    font-size: 24pt;
+    margin: .5em;
 }
-
-div {
-}
-
-
 
 small {
     color: grey;
@@ -33,20 +30,27 @@ small {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    background-color: white;
+    border: 1px;
+    border-style: none none solid;
+    border-color: lightgray;
 }
 
 /* Landing page */
 .heart-logo {
-    width: 10%;
+    width: 17%;
+    min-width: 250px;
 }
 
 .landing-page-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: safe center;
+    align-items: safe center;
+    overflow: auto;
     gap: 10px;
-    height: 80vh;
+    height: 90vh;
+    padding-bottom: 10vh;
     > a {
         background-color: green;
         color: white;
@@ -60,9 +64,16 @@ small {
 .login-register-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 65vh;
+    justify-content: safe center;
+    align-items: safe center;
+    overflow: auto;
+    height: 70vh;
+    min-height: 400px;
+    * {
+        margin: .2em;
+        padding: .2em;
+        line-height: 1.25em;
+    }
 }
 
 .google-apple-login-container {

@@ -1,12 +1,14 @@
-<nav class="navbar">
-    <h2>NinerFit</h2>
-    {% if request.user.is_authenticated %}
-    <a href="{% url 'home' %}">Home</a>
-    <a href="{% url 'health-score' %}">Health Score</a>
-    <a href="">To-do List</a>
-    <a href="">Suggestions</a>
-    <a href="">Chatbot</a>
-    <a href="">Profile</a>
-    <a href="">Settings</a>
-    {% endif %}
-</nav>
+<header>
+    <nav class="navbar">
+        <h2>NinerFit</h2>
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'health-score' %}">Health Score</a>
+        <a href="">To-do List</a>
+        <a href="">Suggestions</a>
+        <a href="">Chatbot</a>
+        <a href="">Profile</a>
+        <a href="">Settings</a>
+        {% endif %}
+    </nav>
+</header>
