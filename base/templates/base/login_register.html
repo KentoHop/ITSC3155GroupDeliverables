@@ -11,7 +11,16 @@
     <a href="{% url 'register' %}"><small>Haven't signed up yet?</small></a>
     <form action="" method="POST">
         {% csrf_token %}
-        <input type="text" name="email" placeholder="email@domain.com" value=""/>
+        <div class="login-form-fields">
+            <div>
+                <label for="email">Email:</label>
+                <input type="text" name="email" placeholder="email@domain.com" value=""/>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="text" name="password" placeholder="********" value=""/>
+            </div>
+        </div>
         <input type="submit" name="continue" value="Login"/>
     </form>
 
@@ -21,15 +30,20 @@
     <a href="{% url 'login' %}"><small>Already signed up?</small></a>
     <form action="" method="POST">
         {% csrf_token %}
-        <label for="email">Email:</label>
-        <input type="text" name="email" placeholder="email@domain.com" value=""/>
-
-        <label for="password">Password:</label>
-        <input type="text" name="password" placeholder="********" value=""/>
-
-        <label for="confirm-password">Confirm password:</label>
-        <input type="text" name="confirm-password" placeholder="********" value=""/>
-
+        <div class="login-form-fields">
+            <div>
+                <label for="email">Email:</label>
+                <input type="text" name="email" placeholder="email@domain.com" value=""/>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="text" name="password" placeholder="********" value=""/>
+            </div>
+            <div>
+                <label for="confirm-password">Confirm password:</label>
+                <input type="text" name="confirm-password" placeholder="********" value=""/>
+            </div>
+        </div>
         <input type="submit" name="continue" value="Register"/>
     </form>
     
