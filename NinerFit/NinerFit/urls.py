@@ -17,8 +17,10 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
- 
+
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path('', include('ChatBot.urls')),
+    path('admin/', admin.site.urls),
+    path('', include('main.urls')),  # Start page & Home page
+    path('auth/', include('Authentication.urls')),  # Authentication (login, register, logout)
+    path('chatbot/', include('ChatBot.urls')),  # Chatbot
 ]
