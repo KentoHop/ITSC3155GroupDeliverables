@@ -20,7 +20,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/', include('main.urls'), name='home_page'),
+    path('', include('main.urls')),  # Include the `main` app's URLs
     path('chatbot/', include('ChatBot.urls'), name='chatbot'),
     path('auth/', include('Authentication.urls')),
 ]
