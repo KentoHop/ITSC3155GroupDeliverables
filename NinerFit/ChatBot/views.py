@@ -13,9 +13,9 @@ client = OpenAI(api_key=your_api)
 # Function to interact with OpenAI ChatGPT
 def ask_openai(message):
     response = client.chat.completions.create(
-        model="gpt-4",  # Use "gpt-4-turbo" if needed after development done
-        message =[
-            {"role": "system", "content": "You are counselor that support user who are trying to be healthy from mental health perspective. If user said something serious that seems like user are  or will be in danger of life, provide contactable information sources such as 911."},
+        model="gpt-4",  # Use "gpt-4-turbo" if needed after development
+        messages=[
+            {"role": "system", "content": "You are a counselor supporting users trying to improve their mental health. If a user expresses a serious crisis, provide emergency contact resources such as 911."},
             {"role": "user", "content": message},
         ],
         max_tokens=150,
