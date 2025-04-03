@@ -1,23 +1,25 @@
 <!DOCTYPE html>
-
 {% load static %}
 
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NinerFit App</title>
+    <title>{% block title %}NinerFit App{% endblock %}</title>
     <!-- Static files -->
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'styles/main.css' ? now 'U' %}">
-
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/main.css' %}">
 </head>
 <body>
 
+    <!-- Navbar Section -->
     {% include 'navbar.html' %}
-    
 
-    {% block content %}
+    <!-- Main Content Block -->
+    <div class="content">
+        {% block content %}
 
-    {% endblock %}
+        {% endblock %}
+    </div>
+
 </body>
 </html>
