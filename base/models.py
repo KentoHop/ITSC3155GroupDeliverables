@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 
-# Create your models here.
+### User Model ###
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         extra_fields = {"is_staff": False, "is_superuser": False, **extra_fields}
@@ -38,3 +38,13 @@ class User(AbstractUser):
     pass
 
     objects = UserManager()
+
+### Chatbot Model ###
+class Chat(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()
+    response = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.user.username}: {self.message}'
