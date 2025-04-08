@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from openai import OpenAI
 from django.contrib import auth
+from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from .models import Chat
 from django.utils import timezone
@@ -37,3 +38,8 @@ def chatbot(request):
         chat.save()
         return JsonResponse({'message': message, 'response': response})
     return render(request, 'chatbot.html', {'chats': chats})
+ 
+ 
+def logout_view(request):
+    logout(request)
+    return redirect('../')
