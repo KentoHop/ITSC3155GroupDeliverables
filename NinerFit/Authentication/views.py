@@ -10,7 +10,7 @@ def login(request):
         user = auth.authenticate(request, username=username, password=password)
         if user is not None:
             auth.login(request, user)
-            return redirect('chatbot')
+            return redirect('home')
         else:
             error_message = 'Invalid username or password'
             return render(request, 'login.html', {'error_message': error_message})
@@ -30,7 +30,7 @@ def register(request):
                 user = User.objects.create_user(username, email, password1)
                 user.save()
                 auth.login(request, user)
-                return redirect('chatbot')
+                return redirect('home')
             except:
                 error_message = 'Error creating account'
                 return render(request, 'register.html', {'error_message': error_message})
