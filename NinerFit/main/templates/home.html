@@ -1,3 +1,142 @@
-<h1>Home Page</h1>
-<p>Welcome, {{ user.username }}!</p>
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Home - NinerFit App{% endblock %}
+
+{% block styles %}
+<style>
+    .hero {
+        text-align: center;
+        background-color: #007bff;
+        color: white;
+        padding: 60px 20px;
+    }
+
+    .hero h1 {
+        font-size: 3em;
+    }
+
+    .hero p {
+        font-size: 1.5em;
+    }
+
+    .hero .btn {
+        background-color: green;
+        color: white;
+        padding: 15px 30px;
+        text-decoration: none;
+        font-size: 1.2em;
+        border-radius: 5px;
+    }
+
+    .hero .btn:hover {
+        background-color: green;
+    }
+
+    /* Features Section */
+    .features {
+        display: flex;
+        justify-content: space-around;
+        padding: 40px 20px;
+    }
+
+    .feature-item {
+        background-color: white;
+        padding: 30px;
+        border-radius: 8px;
+        width: 22%;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 10px;
+    }
+
+    .feature-item h3 {
+        color: #007bff;
+    }
+
+    .feature-item a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .feature-item a:hover {
+        text-decoration: underline;
+    }
+
+    /* Call-to-Action Buttons */
+    .cta-buttons {
+        text-align: center;
+        margin-top: 40px;
+    }
+
+    .cta-buttons a {
+        background-color: green;
+        color: white;
+        padding: 15px 30px;
+        text-decoration: none;
+        font-size: 1.2em;
+        border-radius: 5px;
+        margin: 10px;
+    }
+
+    .cta-buttons a:hover {
+        background-color: green;
+    }
+</style>
+{% endblock%}
+
+{% block content %}
+<div class="home-container">
+    <h1>Home Page</h1>
+    <p>Welcome, {{ user.username }}!</p>
+
+    {% if request.user.is_authenticated %}
+    <div class="home-">
+        <h1>Welcome to NinerFit!</h1>
+        <p>Your health journey starts here. Track your health score, manage your to-do list, and improve your lifestyle.</p>
+    </div>
+    <!-- show the features if the user is authenticated -->
+    <div class="features">
+        <div class="feature-item">
+            <h3>Health Score</h3>
+            <p>Track your health with personalized scores based on your lifestyle.</p>
+            <a href="" class="btn btn-link">Learn More</a>
+        </div>
+        <div class="feature-item">
+            <h3>To-do List</h3>
+            <p>Manage your daily tasks and stay on top of your goals.</p>
+            <a href="" class="btn btn-link">Start Organizing</a>
+        </div>
+        <div class="feature-item">
+            <h3>Suggestions</h3>
+            <p>Get health tips and recommendations tailored to you.</p>
+            <a href="" class="btn btn-link">View Suggestions</a>
+        </div>
+        <div class="feature-item">
+            <h3>Chatbot</h3>
+            <p>Connect with our chatbot for personalized health advice.</p>
+            <a href="{% url 'chatbot' %}" class="btn btn-link">Chat with Us</a>
+        </div>
+    </div>
+
+    {% else %}
+    <header>
+        <h1>Welcome to NinerFit</h1>
+        <p>Your health journey starts here. Track your health score, stay active, and improve your lifestyle.</p>
+    </header>
+    
+    <img class="heart-logo" src="{% static 'images/heart-logo.svg' %}">
+
+    <!-- Call-to-Action Buttons -->
+    <div class="cta-buttons">
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}
+
+
 <a href="{% url 'chatbot' %}">Go to Chatbot</a> | <a href="{% url 'logout' %}">Logout</a>
