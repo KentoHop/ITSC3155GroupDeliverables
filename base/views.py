@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 from .models import User
 
 # Create your views here.
@@ -26,6 +26,10 @@ def loginPage(request):
 
     context = {'page': page}
     return render(request, 'base/login_register.html', context)
+
+def logoutUser(request):
+    logout(request)
+    return redirect('home')
 
 def registerPage(request):
     page = 'register'
@@ -53,3 +57,9 @@ def profile(request):
 
 def settings(request):    
     return render(request, 'base/settings.html')
+
+
+# todo list
+@login_required(login_url='login')
+def todo(request):
+    return render(request, 'base/todolist.html')
