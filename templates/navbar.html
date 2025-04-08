@@ -3,6 +3,8 @@
         <h2><a href="{% url 'home' %}">NinerFit</a></h2>
         <ul>
             {% if request.user.is_authenticated %}
+             <!-- If the user is authenticated, show these links 
+             lets the user know which page they are on -->
             <!-- If the user is authenticated, show these links 
              lets the user know which page they are on -->
                 <li><a href="{% url 'home' %}" class="{% if request.path == '/' %}active{% endif %}">Home</a></li>
