@@ -3,11 +3,9 @@
 {% block content %}
 <div class="chat-container">
   <div class="card flex-grow-1">
-    <div class="card-header bg-primary text-white">{{user.firstName}} {{user.lastName}}'s Therapy Room</div>
     {% if user.is_authenticated %}
-    <div class="card-header bg-primary text-white"><b>Welcome, {{user.username}}</b>   <a style="color: red;" href="../logout">Logout</a></div>
-    {% else %}
-    <div class="card-header bg-primary text-white"><a style="color: red" href="login">Login</a>   <a style="color: red;" href="register">Register</a></div>
+    <div class="card-header bg-primary text-white">{{user.email}}'s Therapy Room</div>
+    <div class="card-header bg-primary text-white"><b>Welcome, {{user.email}}</b>
     {% endif %}
     <div class="card-body messages-box">
       

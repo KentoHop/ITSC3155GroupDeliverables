@@ -1,20 +1,21 @@
 <header>
     <nav class="navbar">
-        <a class="navbar-logo" href="{% url 'home' %}"><h2>NinerFit</h2></a>
-        <ul>
-            {% if request.user.is_authenticated %}
-             <!-- If the user is authenticated, show these links 
-             lets the user know which page they are on -->
-                <li><a href="{% url 'home' %}" class="{% if request.path == '/' %}active{% endif %}">Home</a></li>
-                <li><a href="{% url 'health-score' %}" class="{% if request.path == '/health-score/' %}active{% endif %}">Health Score</a></li>
-                <li><a href="{% url 'to-do-list' %}" class="{% if request.path == '/to-do-list/' %}active{% endif %}">To-do List</a></li>
-                <li><a href="{% url 'suggestions' %}" class="{% if request.path == '/suggestions/' %}active{% endif %}">Suggestions</a></li>
-                <li><a href="{% url 'chatbot' %}" class="{% if request.path == '/chatbot/' %}active{% endif %}">Chatbot</a></li>
-                <li><a href="{% url 'profile' %}" class="{% if request.path == '/profile/' %}active{% endif %}">Profile</a></li>
-                <li><a href="{% url 'settings' %}" class="{% if request.path == '/settings/' %}active{% endif %}">Settings</a></li>
-            {% else %}
-                <li><a href="{% url 'login' %}">Login</a></li>
-            {% endif %}
-        </ul>
+        <h2><a class="navbar-logo" href="{% url 'home' %}">NinerFit</a></h2>
+
+        {% if request.user.is_authenticated %}
+            <!-- If the user is authenticated, show these links 
+            lets the user know which page they are on -->
+            <a href="{% url 'home' %}" class="{% if request.path == '/' %}active{% endif %}">Home</a>
+            <a href="{% url 'health-score' %}" class="{% if request.path == '/health-score/' %}active{% endif %}">Health Score</a>
+            <a href="{% url 'to-do-list' %}" class="{% if request.path == '/to-do-list/' %}active{% endif %}">To-do List</a>
+            <a href="{% url 'suggestions' %}" class="{% if request.path == '/suggestions/' %}active{% endif %}">Suggestions</a>
+            <a href="{% url 'chatbot' %}" class="{% if request.path == '/chatbot/' %}active{% endif %}">Chatbot</a>
+            <a href="{% url 'profile' %}" class="{% if request.path == '/profile/' %}active{% endif %}">Profile</a>
+            <a href="{% url 'settings' %}" class="{% if request.path == '/settings/' %}active{% endif %}">Settings</a>
+            <a href="{% url 'logout' %}" class="{% if request.path == '/logout/' %}active{% endif %}">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+        {% endif %}
     </nav>
 </header>
