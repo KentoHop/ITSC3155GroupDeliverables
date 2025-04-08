@@ -1,0 +1,36 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Health Score</h1>
+            <p>Your health score represents your current well-being based on various metrics. Here’s how you’re doing:</p>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Your Score: {{ health_score }}</h2>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="{{ health_score }}" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h3>Health Tips:</h3>
+            <p>
+                {% if health_score < 50 %}
+                    Your health score is below optimal levels. Consider consulting with a healthcare professional for personalized advice and taking steps toward a healthier lifestyle.
+                {% elif health_score < 80 %}
+                    You are doing well, but there’s room for improvement. Maintain a balanced diet, stay active, and prioritize mental wellness.
+                {% else %}
+                    Excellent health score! Keep up the good work with regular exercise, a nutritious diet, and proper rest.
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

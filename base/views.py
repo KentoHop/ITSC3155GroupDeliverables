@@ -1,62 +1,60 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render
-
-from .models import User
-
-from django.shortcuts import render, redirect
-from django.http import JsonResponse
-from openai import OpenAI
-from django.contrib import auth
-from django.contrib.auth import logout
-from django.contrib.auth.models import User
-from .models import Chat
-from django.utils import timezone
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from django.utils import timezone
+from openai import OpenAI
 
-
+from .models import User, Chat
 
 '''
 Views are separated based on section.
-Additionally, when writing HTML templates in base/templates/base,
-make sure to create a new folder for each section (chatbot, health_score, etc...).
 
 Ctrl+F to search for one of the following:
 - ### Authentification ###
+- ### Home ###
 - ### Chatbot ###
 - 
 '''
 
 ### Authentification ###
 def landing(request):
-    return render(request, 'base/authentication/landing.html')
+    return render(request, 'base/landing.html')
 
-def login_view(request):
+def loginPage(request):
     page = 'login'
 
     if request.method == 'POST':
         email = request.POST.get('email')
-        user = authenticate(request, email=email)
+        password = request.POST.get('password')
+        user = authenticate(request, username=email, password=password)
         if user is not None:
             login(request, user)
-            return redirect('/home/')
+            return redirect('/home/')  # Redirect to the homepage after successful login
         else:
-            # Return an 'invalid login' error message.
-            return redirect('/login/')
+            messages.error(request, 'Invalid email or password. Please try again.')
+            return redirect('login')
 
     context = {'page': page}
-    return render(request, 'base/authentication/login_register.html', context)
+    return render(request, 'base/login_register.html', context)
 
-def register_view(request):
+def registerPage(request):
     page = 'register'
 
     context = {'page': page}
-    return render(request, 'base/authentication/login_register.html', context)
+    return render(request, 'base/login_register.html', context)
+
+def logout_view(request):
+    logout(request)
+    return redirect('../')
+
+### Home ###
 
 def home(request):
-    return render(request, 'base/authentication/home.html')
+    return render(request, 'base/home.html')
+
 
 
 ### Chatbot ###
@@ -78,7 +76,6 @@ def ask_openai(message):
     answer = response.choices[0].message.content.strip()
     return answer
 
-# Create your views here.
 @login_required
 def chatbot(request):
     chats = Chat.objects.filter(user=request.user)
@@ -88,8 +85,24 @@ def chatbot(request):
         chat = Chat(user=request.user, message=message, response=response, created_at=timezone.now())
         chat.save()
         return JsonResponse({'message': message, 'response': response})
-    return render(request, 'base/chatbot/chatbot.html', {'chats': chats})
+    return render(request, 'base/chatbot.html', {'chats': chats})
 
-def logout_view(request):
-    logout(request)
-    return redirect('../')
+
+### Health Score ###
+def healthScore(request):
+    return render(request, 'base/healthscore.html')
+
+def toDoList(request):
+    return render(request, 'base/todolist.html')
+
+def suggestions(request):
+    return render(request, 'base/suggestions.html')
+
+def chatbot(request):
+    return render(request, 'base/chatbot.html')
+
+def profile(request):
+    return render(request, 'base/profile.html')
+
+def settings(request):    
+    return render(request, 'base/settings.html')

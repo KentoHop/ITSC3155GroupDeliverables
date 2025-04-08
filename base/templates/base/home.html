@@ -1,0 +1,57 @@
+{% extends 'main.html' %}
+
+{% load static %}
+
+{% block title %}Home - NinerFit App{% endblock %}
+
+{% block content %}
+<div class="home-container">
+
+
+    {% if request.user.is_authenticated %}
+    <div class="home-">
+        <h1>Welcome to NinerFit!</h1>
+        <p>Your health journey starts here. Track your health score, manage your to-do list, and improve your lifestyle.</p>
+        <a href="{% url 'health-score' %}" class="btn btn-primary">Check Your Health Score</a>
+    </div>
+    <!-- show the features if the user is authenticated -->
+    <div class="features">
+        <div class="feature-item">
+            <h3>Health Score</h3>
+            <p>Track your health with personalized scores based on your lifestyle.</p>
+            <a href="{% url 'health-score' %}" class="btn btn-link">Learn More</a>
+        </div>
+        <div class="feature-item">
+            <h3>To-do List</h3>
+            <p>Manage your daily tasks and stay on top of your goals.</p>
+            <a href="{% url 'to-do-list' %}" class="btn btn-link">Start Organizing</a>
+        </div>
+        <div class="feature-item">
+            <h3>Suggestions</h3>
+            <p>Get health tips and recommendations tailored to you.</p>
+            <a href="{% url 'suggestions' %}" class="btn btn-link">View Suggestions</a>
+        </div>
+        <div class="feature-item">
+            <h3>Chatbot</h3>
+            <p>Connect with our chatbot for personalized health advice.</p>
+            <a href="{% url 'chatbot' %}" class="btn btn-link">Chat with Us</a>
+        </div>
+    </div>
+
+    {% else %}
+    <header>
+        <h1>Welcome to NinerFit</h1>
+        <p>Your health journey starts here. Track your health score, stay active, and improve your lifestyle.</p>
+    </header>
+    
+    <img class="heart-logo" src="{% static 'images/heart-logo.svg' %}">
+
+    <!-- Call-to-Action Buttons -->
+    <div class="cta-buttons">
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}
