@@ -1,12 +1,14 @@
 {% extends 'main.html' %}
 
+{% load static %}
+
 {% block title %}Home - NinerFit App{% endblock %}
 
 {% block content %}
 <div class="home-container">
 
 
-    {% if user.is_authenticated %}
+    {% if request.user.is_authenticated %}
     <div class="home-">
         <h1>Welcome to NinerFit!</h1>
         <p>Your health journey starts here. Track your health score, manage your to-do list, and improve your lifestyle.</p>
