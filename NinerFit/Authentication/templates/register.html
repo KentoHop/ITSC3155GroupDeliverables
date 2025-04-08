@@ -73,6 +73,7 @@
   <div class="card">
     <div class="card-header">Register</div>
     <div class="card-body">
+      <p>Enter your email to sign up for this app.</p>
       {% if error_message %}
         <div class="alert alert-danger" role="alert">{{ error_message }}</div>
       {% endif %}
@@ -96,6 +97,7 @@
         </div>
         <button type="submit">Register</button>
       </form>
+      <a href="{% url 'login' %}"><small>Already signed up?</small></a>
     </div>
   </div>
 </div>
