@@ -17,7 +17,7 @@ def suggestions(request):
 # to do list
 @login_required(login_url='login')
 def toDoList(request):
-    todos = TodoItem.objects.filter(user=request.user).order_by('-created_at')
+    todos = TodoItem.objects.filter(user=request.user).order_by('-created_at') # `order_by` to sort the tasks by creation date
     return render(request, 'HealthScore/templates/todolist.html',{'todos': todos})
 
 # add todo   
