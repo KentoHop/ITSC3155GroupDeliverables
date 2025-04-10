@@ -37,7 +37,7 @@
 
   .message-form {
     display: flex;
-    position: fixed;
+    position: sticky;
     bottom: 0;
     left: 0;
     right: 0;
@@ -56,9 +56,10 @@
   }
 
   .chat-container {
-    height: 100%;
+    height: 80vh;
     display: flex;
     flex-direction: column;
+    margin: 1em 12.5%;
   }
 </style>
 {% endblock %}
@@ -118,7 +119,7 @@
     </div>
 
     <form class="message-form">
-      {%csrf_token%}
+      {% csrf_token %}
       <div class="input-group">
         <input type="text" class="form-control message-input" placeholder="Type your message...">
         <div class="input-group-append">

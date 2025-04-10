@@ -39,6 +39,7 @@ def chatbot(request):
         return JsonResponse({'message': message, 'response': response})
     return render(request, 'chatbot.html', {'chats': chats})
  
+ 
 def logout_view(request):
     logout(request)
     return redirect('../')

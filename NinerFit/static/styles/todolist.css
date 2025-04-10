@@ -1,0 +1,15 @@
+.body {
+    text-align: center;
+}
+
+.todolist-form {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    min-width: 400px;
+    gap: 1em;
+}
+
+.todolist-tasks > li {
+    border-bottom: 1px solid lightgray;
+}
