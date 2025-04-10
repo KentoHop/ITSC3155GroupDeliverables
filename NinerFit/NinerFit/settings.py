@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'main',
     'Authentication',
     'Profiles',
+    'HealthScore',
 ]
 
 MIDDLEWARE = [
