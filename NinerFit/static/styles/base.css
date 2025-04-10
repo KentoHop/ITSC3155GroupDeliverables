@@ -1,3 +1,8 @@
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
 body > :not(header):not(footer) {
     margin: 1em 15%;
 }

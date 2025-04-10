@@ -39,3 +39,9 @@ NinerFit/Profiles/migrations/__init__.py
 NinerFit/Profiles/migrations/0001_initial.py
 NinerFit/Profiles/migrations/__pycache__/__init__.cpython-313.pyc
 NinerFit/Profiles/migrations/__pycache__/0001_initial.cpython-313.pyc
+NinerFit/main/migrations/0001_initial.py
+NinerFit/main/migrations/0002_dailyentry_sleep.py
+NinerFit/main/migrations/0003_foodlog.py
+NinerFit/main/migrations/0004_foodlog_carbs_foodlog_fat_foodlog_fiber_and_more.py
+NinerFit/main/migrations/__pycache__/__init__.cpython-39.pyc
+NinerFit/main/migrations/__pycache__/__init__.cpython-312.pyc

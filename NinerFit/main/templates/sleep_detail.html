@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% block title %}Sleep Tracker - NinerFit{% endblock %}
+
+{% block styles %}
+<style>
+    .sleep-container {
+        padding: 40px;
+        background-color: #f7f9fc;
+        max-width: 800px;
+        margin: 0 auto;
+        border-radius: 10px;
+    }
+
+    h1 {
+        color: #007bff;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .sleep-info {
+        font-size: 1.2em;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .sleep-form {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .sleep-form input[type="number"] {
+        padding: 10px;
+        width: 80px;
+        text-align: center;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-right: 10px;
+    }
+
+    .sleep-form button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .sleep-form button:hover {
+        background-color: #0056b3;
+    }
+
+    .suggestion-card {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        font-weight: bold;
+    }
+
+    .chart-container {
+        margin-top: 40px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .chart-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="sleep-container">
+    <h1>Sleep Tracker</h1>
+
+    <div class="sleep-info">
+        You slept <strong>{{ entry.sleep }}</strong> hour{{ entry.sleep|pluralize }} last night.
+    </div>
+
+    <div class="sleep-form">
+        <form method="post" action="{% url 'sleep_detail' %}">
+            {% csrf_token %}
+            <label for="sleep">Log Sleep Hours:</label>
+            <input type="number" id="sleep" name="sleep" min="0" max="24" required>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <form method="post" action="{% url 'sleep_detail' %}" style="display: inline-block;">
+            {% csrf_token %}
+            <input type="hidden" name="generate_sleep_data" value="true">
+            <button type="submit" style="background-color: #6f42c1; color: white; padding: 10px 20px; border: none; border-radius: 5px;">
+                Generate Dummy Sleep Data
+            </button>
+        </form>
+    
+        <form method="post" action="{% url 'sleep_detail' %}" style="display: inline-block; margin-left: 10px;">
+            {% csrf_token %}
+            <input type="hidden" name="reset_sleep_data" value="true">
+            <button type="submit" style="background-color: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 5px;">
+                Reset Sleep Data
+            </button>
+        </form>
+    </div>
+    
+
+    <div class="suggestion-card">
+        {% if entry.sleep >= 8 %}
+            😴 Great job! You hit your sleep goal. Keep it up.
+        {% elif entry.sleep >= 6 %}
+            😌 Not bad, but try to hit 8 hours tonight.
+        {% else %}
+            💤 Try to get more rest. Aim for at least 7-8 hours for optimal health.
+        {% endif %}
+    </div>
+
+    <div class="chart-container">
+        <h2>Sleep in the Last 7 Days</h2>
+        <canvas id="sleepChart"></canvas>
+    </div>
+
+    <a href="{% url 'health_score' %}" class="back-link">← Back to Dashboard</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('sleepChart').getContext('2d');
+    const sleepChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ sleep_labels|safe }},
+            datasets: [{
+                label: 'Hours Slept',
+                data: {{ sleep_values|safe }},
+                backgroundColor: '#007bff'
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    suggestedMax: 10
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
