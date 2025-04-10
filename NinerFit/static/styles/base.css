@@ -1,0 +1,3 @@
+body > :not(header):not(footer) {
+    margin: 1em 15%;
+}

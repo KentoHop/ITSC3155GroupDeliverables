@@ -1,22 +1,26 @@
 {% extends 'base.html' %}
 
-{% block title %}Login{% endblock %}
+{% load static %}
+
+{% block title %}Todo List{% endblock %}
+
+{% block styles %}<link href="{% static 'styles/todolist.css' %}" rel="stylesheet">{% endblock %}
 
 {% block content %}
 <h2>Your To-Do List</h2>
 
 <!-- Add New Task -->
-<form method="POST" action="{% url 'addtodo' %}">
+<form class="todolist-form" method="POST" action="{% url 'addtodo' %}">
     {% csrf_token %}
-    <input type="text" name="title" placeholder="Task Title" required>
-    <textarea name="description" placeholder="Task Description"></textarea>
-    <button type="submit">Add Task</button>
+    <input type="text" name="title" placeholder="Task Title" class="form-control" required>
+    <textarea name="description" placeholder="Task Description" class="form-control"></textarea>
+    <button type="submit" class="btn btn-dark btn-lg">Add Task</button>
 </form>
 
 <hr>
 
 <!-- Display Tasks -->
-<ul>
+<ul class="todolist-tasks">
     {% for todo in todos %}
         <li>
             <strong>{{ todo.title }}</strong> - {{ todo.description }} 

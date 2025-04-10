@@ -26,5 +26,5 @@ urlpatterns = [
     path('chatbot/', include('ChatBot.urls'), name='chatbot'),
     path('auth/', include('Authentication.urls')),
     path('profile/', include('Profiles.urls'), name='profile'),
-    path('healthscore/', include('HealthScore.urls'), name='todolist'),
+    path('healthscore/', include('HealthScore.urls'), name="health-score"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

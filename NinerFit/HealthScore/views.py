@@ -6,12 +6,13 @@ from django.contrib.auth import authenticate, login,logout
 from .models import User, TodoItem
 
 
-# Create your views here.
+# Health Score
 def healthScore(request):
-    return render(request, 'HealthScore/templates/healthscore.html')
+    return render(request, 'healthscore.html')
 
+# Suggestions
 def suggestions(request):
-    return render(request, 'HealthScore/templates/suggestions.html')
+    return render(request, 'suggestions.html')
 
 
 # to do list
@@ -29,7 +30,7 @@ def addTodo(request):
         todo = TodoItem(user=request.user, title=title, description=description)
         todo.save()
         messages.success(request, 'Task added successfully')
-        return redirect('todolist')
+        return redirect('to-do-lists')
     return render(request, 'HealthScore/templates/todolist.html')
 
 # update todo
