@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Health Score - NinerFit{% endblock %}
+
+{% block styles %}
+<style>
+    .health-container {
+        padding: 40px 20px;
+        background-color: #f9f9f9;
+    }
+
+    .health-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .health-header h1 {
+        color: #007bff;
+        font-size: 2.5em;
+    }
+
+    .ring-grid {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 30px;
+        margin-top: 30px;
+    }
+
+    circle.bg {
+        fill: none;
+        stroke: #e6e6e6;
+        stroke-width: 12;
+    }
+
+    circle.progress {
+        fill: none;
+        stroke-width: 12;
+        stroke-linecap: round;
+        stroke-dasharray: 502;
+        stroke-dashoffset: 502;
+        transition: stroke-dashoffset 0.5s ease;
+    }
+
+    svg text {
+        fill: black;
+        font-size: 16px;
+        text-anchor: middle;
+        dominant-baseline: middle;
+        transform-origin: center;
+        cursor: pointer;
+    }
+
+    .log-form {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .log-form button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .log-form button:hover {
+        background-color: #0056b3;
+    }
+
+    .badge {
+        color: white;
+        padding: 5px 12px;
+        border-radius: 10px;
+        font-weight: bold;
+    }
+
+    .centered-ring {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="health-container">
+    <div class="health-header">
+        <h1>NinerFit</h1>
+        <p>Health Score</p>
+    </div>
+
+    <div class="centered-ring">
+        <svg width="200" height="200" viewBox="0 0 200 200" style="transform: rotate(-90deg);">
+            <circle class="bg" cx="100" cy="100" r="80" />
+            <circle class="progress" cx="100" cy="100" r="80"
+                    style="stroke: 
+                        {% if health_score >= 80 %}
+                            #28a745
+                        {% elif health_score >= 60 %}
+                            #ffc107
+                        {% elif health_score >= 40 %}
+                            #fd7e14
+                        {% else %}
+                            #dc3545
+                        {% endif %};
+                        stroke-dasharray: {{ big_circle_circumference }};
+                        stroke-dashoffset: {{ score_offset }};" />
+            <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" style="font-size: 32px; transform: rotate(90deg);" onclick="window.location.href='{% url 'health_score' %}'">
+                {{ health_score }}
+            </text>
+        </svg>
+        <div style="text-align:center; margin-top: 10px;">
+            {% if health_score == 100 %}
+                <span class="badge" style="background-color: #28a745;">Perfect</span>
+            {% elif health_score >= 80 %}
+                <span class="badge" style="background-color: #6bd332;">Excellent</span>
+            {% elif health_score >= 60 %}
+                <span class="badge" style="background-color: #ffc107;">Good</span>
+            {% elif health_score >= 40 %}
+                <span class="badge" style="background-color: #fd7e14;">Fair</span>
+            {% else %}
+                <span class="badge" style="background-color: #dc3545;">Poor</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Sub-metric Rings -->
+    <div class="ring-grid">
+        <!-- Calories -->
+        <div class="progress-ring">
+            <svg width="120" height="120" style="transform: rotate(-90deg);">
+                <circle class="bg" cx="60" cy="60" r="50" />
+                <circle class="progress" cx="60" cy="60" r="50"
+                        style="stroke: #28a745; stroke-dasharray: {{ circumference }}; stroke-dashoffset: {{ calorie_offset }};" />
+                <text x="50%" y="40%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'calorie_detail' %}'">{{ calorie_percent }}%</text>
+                <text x="50%" y="58%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'calorie_detail' %}'">Calories</text>
+            </svg>
+        </div>
+
+        <!-- Water -->
+        <div class="progress-ring">
+            <svg width="120" height="120" style="transform: rotate(-90deg);">
+                <circle class="bg" cx="60" cy="60" r="50" />
+                <circle class="progress" cx="60" cy="60" r="50"
+                        style="stroke: #007bff; stroke-dasharray: {{ circumference }}; stroke-dashoffset: {{ water_offset }};" />
+                <text x="50%" y="40%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'water_detail' %}'">{{ water_percent }}%</text>
+                <text x="50%" y="58%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'water_detail' %}'">Water</text>
+            </svg>
+        </div>
+
+        <!-- Sleep -->
+        <div class="progress-ring">
+            <svg width="120" height="120" style="transform: rotate(-90deg);">
+                <circle class="bg" cx="60" cy="60" r="50" />
+                <circle class="progress" cx="60" cy="60" r="50"
+                        style="stroke: #6c757d; stroke-dasharray: {{ circumference }}; stroke-dashoffset: {{ sleep_offset }};" />
+                <text x="50%" y="40%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'sleep_detail' %}'">{{ sleep_percent }}%</text>
+                <text x="50%" y="58%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'sleep_detail' %}'">Sleep</text>
+            </svg>
+        </div>
+    </div>
+</div>
+{% endblock %}

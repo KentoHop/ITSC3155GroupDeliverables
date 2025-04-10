@@ -1,0 +1,322 @@
+{% extends 'base.html' %}
+
+{% block title %}Calorie Tracker - NinerFit{% endblock %}
+
+{% block styles %}
+<style>
+    .calorie-container {
+        padding: 40px;
+        background-color: #fff8f0;
+        max-width: 900px;
+        margin: 0 auto;
+        border-radius: 10px;
+    }
+
+    h1 {
+        color: #fd7e14;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .calorie-info, .streak-info {
+        font-size: 1.2em;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .calorie-form {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .calorie-form input, .calorie-form select {
+        padding: 10px;
+        margin: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .calorie-form button {
+        background-color: #fd7e14;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .calorie-form button:hover {
+        background-color: #e66900;
+    }
+
+    .chart-container, .macro-chart {
+        margin-top: 40px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .chart-container h2, .macro-chart h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 30px;
+        font-weight: bold;
+    }
+
+    .food-log-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .food-log-table th, .food-log-table td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    .food-log-table th {
+        background-color: #ffe5d0;
+    }
+
+    .suggestion-card {
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 30px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="calorie-container">
+    <h1>Calorie Tracker</h1>
+
+    <div class="calorie-info">
+        Total calories today: <strong>{{ total_calories }}</strong> / {{ goal_calories }} kcal
+    </div>
+
+    <div class="streak-info">
+        Streak: 🔥 <strong>{{ streak }}</strong> day{{ streak|pluralize }} of goal met!
+    </div>
+
+    <div class="calorie-form">
+        <input type="text" id="foodSearch" placeholder="Search for food..." required>
+        <ul id="searchResults" style="list-style: none; padding: 0;"></ul>
+    
+        <form id="confirmForm" method="post" action="{% url 'calorie_detail' %}" style="display:none; margin-top: 20px;">
+            {% csrf_token %}
+            <input type="hidden" name="food">
+            <input type="hidden" name="calories">
+            <input type="hidden" name="meal" value="other">
+            <input type="hidden" name="protein">
+            <input type="hidden" name="carbs">
+            <input type="hidden" name="fat">
+            <input type="hidden" name="sugar">
+            <input type="hidden" name="fiber">
+    
+            <div id="previewCard" style="padding: 15px; border-radius: 10px; background-color: #fff3cd; color: #333; margin-bottom: 10px;">
+            </div>
+    
+            <button type="submit" style="background-color: #28a745; color: white; padding: 10px 20px; border-radius: 5px; border: none; cursor: pointer;">Confirm & Add to Log</button>
+        </form>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 30px;">
+        <form method="post" action="{% url 'calorie_detail' %}" style="display:inline-block;">
+            {% csrf_token %}
+            <input type="hidden" name="generate_calorie_data" value="true">
+            <button type="submit" style="background-color: #007bff; color: white; padding: 10px 20px; border-radius: 5px;">
+                Generate Dummy Calorie Logs
+            </button>
+        </form>
+    
+        <form method="post" action="{% url 'calorie_detail' %}" style="display:inline-block; margin-left: 10px;">
+            {% csrf_token %}
+            <input type="hidden" name="reset_calories" value="true">
+            <button type="submit" style="background-color: #dc3545; color: white; padding: 10px 20px; border-radius: 5px;">
+                Reset Calorie Logs
+            </button>
+        </form>
+    </div>
+    
+
+    <div class="suggestion-card">
+        {{ suggestion_message }}
+    </div>
+
+    <div class="chart-container">
+        <h2>Nutrition Over the Last 7 Days</h2>
+        <div style="text-align: center; margin-bottom: 10px;">
+            <label for="dataSelect"><strong>View:</strong></label>
+            <select id="dataSelect">
+                <option value="calories">Calories</option>
+                <option value="protein">Protein</option>
+                <option value="carbs">Carbs</option>
+                <option value="fat">Fat</option>
+                <option value="sugar">Sugar</option>
+                <option value="fiber">Fiber</option>
+            </select>
+        </div>
+        <canvas id="calorieChart"></canvas>
+    </div>
+
+    <div class="macro-chart">
+        <h2>Macronutrient Breakdown (Today)</h2>
+        <canvas id="macroChart"></canvas>
+    </div>
+
+    <h2 style="text-align: center; margin-top: 40px;">Food Log</h2>
+    <table class="food-log-table">
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Food</th>
+                <th>Meal</th>
+                <th>Calories</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in food_logs %}
+                <tr>
+                    <td>{{ log.timestamp|date:"h:i A" }}</td>
+                    <td>{{ log.food }}</td>
+                    <td>{{ log.meal|capfirst }}</td>
+                    <td>{{ log.calories }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="4">No entries yet today.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'health_score' %}" class="back-link">← Back to Dashboard</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+const chartLabels = {{ calorie_labels|safe }};
+const dataMap = {
+    calories: {{ calorie_values|safe }},
+    protein: {{ protein_values|safe }},
+    carbs: {{ carbs_values|safe }},
+    fat: {{ fat_values|safe }},
+    sugar: {{ sugar_values|safe }},
+    fiber: {{ fiber_values|safe }},
+};
+
+const colors = {
+    calories: '#fd7e14',
+    protein: '#007bff',
+    carbs: '#ffc107',
+    fat: '#dc3545',
+    sugar: '#8e44ad',
+    fiber: '#1abc9c'
+};
+
+const ctx = document.getElementById('calorieChart').getContext('2d');
+function getSuggestedMax(values) {
+    const maxVal = Math.max(...values);
+    return Math.ceil(maxVal * 1.2);
+}
+
+let calorieChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: chartLabels,
+        datasets: [{
+            label: 'Calories',
+            data: dataMap['calories'],
+            backgroundColor: colors['calories']
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                suggestedMax: getSuggestedMax(dataMap['calories'])
+            }
+        }
+    }
+});
+
+document.getElementById('dataSelect').addEventListener('change', function () {
+    const selected = this.value;
+    const selectedData = dataMap[selected];
+
+    calorieChart.data.datasets[0].data = selectedData;
+    calorieChart.data.datasets[0].label = selected.charAt(0).toUpperCase() + selected.slice(1);
+    calorieChart.data.datasets[0].backgroundColor = colors[selected];
+    calorieChart.options.scales.y.suggestedMax = getSuggestedMax(selectedData);
+    calorieChart.update();
+});
+
+
+const ctx2 = document.getElementById('macroChart').getContext('2d');
+let macroChart = new Chart(ctx2, {
+    type: 'pie',
+    data: {
+        labels: ['Protein', 'Carbs', 'Fats', 'Sugar', 'Fiber'],
+        datasets: [{
+            data: {{ macro_values|safe }},
+            backgroundColor: ['#007bff', '#ffc107', '#dc3545', '#8e44ad', '#1abc9c']
+        }]
+    }
+});
+
+let macroChartInstance = macroChart;
+
+document.getElementById('foodSearch').addEventListener('input', function () {
+    const query = this.value;
+    if (!query) return;
+
+    fetch(`/usda/search/?query=${query}`)
+        .then(res => res.json())
+        .then(data => {
+            const list = document.getElementById('searchResults');
+            list.innerHTML = '';
+            data.results.forEach(food => {
+                const li = document.createElement('li');
+                li.style.padding = '10px';
+                li.style.cursor = 'pointer';
+                li.style.borderBottom = '1px solid #ccc';
+                li.style.backgroundColor = '#fff';
+                li.innerHTML = `<strong>${food.name}</strong> - ${food.calories} kcal`;
+                li.onclick = () => {
+                    const form = document.getElementById('confirmForm');
+                    const preview = document.getElementById('previewCard');
+
+                    form.food.value = food.name;
+                    form.calories.value = food.calories;
+                    form.protein.value = food.protein || 0;
+                    form.carbs.value = food.carbs || 0;
+                    form.fat.value = food.fat || 0;
+                    form.sugar.value = food.sugar || 0;
+                    form.fiber.value = food.fiber || 0;
+                    
+                    preview.innerHTML = `
+                        <h3>${food.name}</h3>
+                        <p><strong>Calories:</strong> ${food.calories} kcal</p>
+                        <p><strong>Protein:</strong> ${food.protein}g | <strong>Carbs:</strong> ${food.carbs}g | <strong>Fat:</strong> ${food.fat}g</p>
+                        <p><strong>Sugar:</strong> ${food.sugar}g | <strong>Fiber:</strong> ${food.fiber}g</p>
+                    `;
+
+                    form.style.display = 'block';
+                    list.innerHTML = '';
+                    document.getElementById('foodSearch').value = '';
+                };
+                list.appendChild(li);
+            });
+        });
+});
+</script>
+{% endblock %}
