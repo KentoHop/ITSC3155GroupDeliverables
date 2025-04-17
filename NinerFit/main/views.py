@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from datetime import date, timedelta
+from HealthScore.models import TodoItem
 from .models import DailyEntry, FoodLog
 import math
 from django.conf import settings
@@ -14,7 +15,9 @@ def start_page(request):
 
 @login_required
 def home(request):
-    return render(request, 'home.html')
+    todos = TodoItem.objects.filter(user=request.user)
+    health_score = health_score_view(request)
+    return render(request, 'home.html', {'todos': todos, 'health_score': health_score})
 
 @login_required
 def health_score_view(request):

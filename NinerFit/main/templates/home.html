@@ -4,59 +4,123 @@
 
 {% block title %}Home - NinerFit App{% endblock %}
 
-{% block styles %}<link href="{% static 'styles/home.css' %}" rel="stylesheet">{% endblock %}
+{% block styles %}
+<link href="{% static 'styles/home.css' %}" rel="stylesheet">
 
-{% block content %}
-<div class="home-container">
-    <h1>Home Page</h1>
-    <p>Welcome, {{ user.username }}!</p>
-
-    {% if request.user.is_authenticated %}
-    <div class="home-">
-        <h1>Welcome to NinerFit!</h1>
-        <p>Your health journey starts here. Track your health score, manage your to-do list, and improve your lifestyle.</p>
-    </div>
-    <!-- show the features if the user is authenticated -->
-    <div class="features">
-        <div class="feature-item">
-            <h3>Health Score</h3>
-            <p>Track your health with personalized scores based on your lifestyle.</p>
-            <a href="" class="btn btn-link">Learn More</a>
-        </div>
-        <div class="feature-item">
-            <h3>To-do List</h3>
-            <p>Manage your daily tasks and stay on top of your goals.</p>
-            <a href="" class="btn btn-link">Start Organizing</a>
-        </div>
-        <div class="feature-item">
-            <h3>Suggestions</h3>
-            <p>Get health tips and recommendations tailored to you.</p>
-            <a href="" class="btn btn-link">View Suggestions</a>
-        </div>
-        <div class="feature-item">
-            <h3>Chatbot</h3>
-            <p>Connect with our chatbot for personalized health advice.</p>
-            <a href="{% url 'chatbot' %}" class="btn btn-link">Chat with Us</a>
-        </div>
-    </div>
-
-    {% else %}
-    <header>
-        <h1>Welcome to NinerFit</h1>
-        <p>Your health journey starts here. Track your health score, stay active, and improve your lifestyle.</p>
-    </header>
-    
-    <img class="heart-logo" src="{% static 'images/heart-logo.svg' %}">
-
-    <!-- Call-to-Action Buttons -->
-    <div class="cta-buttons">
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'register' %}">Register</a>
-    </div>
-    {% endif %}
-
-</div>
 {% endblock %}
 
+{% block content %}
+{% if request.user.is_authenticated %}
+<div class="dashboard">
+    <!-- Health Score Section -->
+    <section class="dashboard-section health-score">
+        <h2>Health Score</h2>
+        <div class="health-score-graph">
+            <svg width="100%" height="100%" viewBox="0 0 200 200" style="transform: rotate(-90deg);">
+                <circle cx="100" cy="100" r="80" fill="none" stroke="#e0e0e0" stroke-width="12" />
+                <circle cx="100" cy="100" r="80" fill="none" 
+                        stroke="{% if health_score >= 80 %}#27ae60
+                               {% elif health_score >= 60 %}#f39c12
+                               {% elif health_score >= 40 %}#e67e22
+                               {% else %}#e74c3c{% endif %}" 
+                        stroke-width="12" 
+                        stroke-dasharray="{{ big_circle_circumference }}" 
+                        stroke-dashoffset="{{ score_offset }}" />
+            </svg>
+            <div class="health-score-value" onclick="window.location.href='{% url 'health_score' %}'">
+                {{ health_score }}
+            </div>
+        </div>
+        <div class="health-score-status" style="background-color: 
+            {% if health_score == 100 %}#27ae60
+            {% elif health_score >= 80 %}#2ecc71
+            {% elif health_score >= 60 %}#f39c12
+            {% elif health_score >= 40 %}#e67e22
+            {% else %}#e74c3c{% endif %}">
+            {% if health_score == 100 %}Perfect
+            {% elif health_score >= 80 %}Excellent
+            {% elif health_score >= 60 %}Good
+            {% elif health_score >= 40 %}Fair
+            {% else %}Poor{% endif %}
+        </div>
+    </section>
 
-<a href="{% url 'chatbot' %}">Go to Chatbot</a> | <a href="{% url 'logout' %}">Logout</a>
+    <!-- Features Section -->
+    <section class="dashboard-section">
+        <div class="welcome-message">
+            <h2>Welcome, {{ user.username }}!</h2>
+            <p>Your health journey starts here. Track your health score, manage your to-do list, and improve your lifestyle.</p>
+        </div>
+
+        <div class="features-grid">
+            <article class="feature-card">
+                <h3>Health Score</h3>
+                <p>Track your health with personalized scores based on your lifestyle.</p>
+                <a href="#" class="feature-link">Learn More →</a>
+            </article>
+            
+            <article class="feature-card">
+                <h3>To-do List</h3>
+                <p>Manage your daily tasks and stay on top of your goals.</p>
+                <a href="{% url 'to-do-list' %}" class="feature-link">Start Organizing →</a>
+            </article>
+            
+            <article class="feature-card">
+                <h3>Suggestions</h3>
+                <p>Get health tips and recommendations tailored to you.</p>
+                <a href="#" class="feature-link">View Suggestions →</a>
+            </article>
+            
+            <article class="feature-card">
+                <h3>Chatbot</h3>
+                <p>Connect with our chatbot for personalized health advice.</p>
+                <a href="{% url 'chatbot' %}" class="feature-link">Chat with Us →</a>
+            </article>
+        </div>
+    </section>
+
+    <!-- Todo List Section -->
+    <section class="dashboard-section">
+        <h2>Your To-Do List</h2>
+        
+        {% if todos %}
+        <ul class="todo-list">
+            {% for todo in todos %}
+            <li class="todo-item">
+                <div class="todo-header">
+                    <span class="todo-number">{{ forloop.counter }}</span>
+                    <span class="todo-title">{{ todo.title }}</span>
+                    <span class="todo-status {% if todo.completed %}status-completed{% else %}status-pending{% endif %}">
+                        {% if todo.completed %}Completed{% else %}Pending{% endif %}
+                    </span>
+                </div>
+                <p class="todo-description">{{ todo.description }}</p>
+                <div class="todo-actions">
+                    <a href="{% url 'updatetodo' todo.id %}" class="action-btn edit-btn">Edit</a>
+                    <form method="POST" action="{% url 'deletetodo' todo.id %}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this task?');">
+                        {% csrf_token %}
+                        <button type="submit" class="action-btn delete-btn">Delete</button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No tasks yet. Add your first task to get started!</p>
+        {% endif %}
+    </section>
+</div>
+{% else %}
+<!-- Guest View -->
+<div class="guest-view">
+    <img src="{% static 'images/heart-logo.svg' %}" alt="NinerFit Logo" class="app-logo">
+    <h1>Welcome to NinerFit</h1>
+    <p>Your personal health companion. Track your wellness, stay active, and achieve your health goals with our comprehensive tools and personalized recommendations.</p>
+    
+    <div class="auth-buttons">
+        <a href="{% url 'login' %}" class="auth-btn login-btn">Login</a>
+        <a href="{% url 'register' %}" class="auth-btn register-btn">Register</a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
