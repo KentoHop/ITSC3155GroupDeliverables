@@ -1,16 +1,22 @@
 {% extends 'base.html' %}
+{% block title %}Todo List{% endblock %}
+
 {% block content %}
-<h2>Edit Task</h2>
 
-<form method="POST">
-    {% csrf_token %}
-    <input type="text" name="title" value="{{ todo.title }}" required>
-    <textarea name="description">{{ todo.description }}</textarea>
-    <label>
-        <input type="checkbox" name="completed" {% if todo.completed %}checked{% endif %}> Completed
-    </label>
-    <button type="submit">Save</button>
-</form>
+<div class="todolist-container" style="padding: 40px; background-color: #e6f7ff; max-width: 800px; margin: 0 auto; border-radius: 10px;">
+    <h2 class="mb-4">📝 Edit To-Do Item</h2>
 
-<a href="{% url 'to-do-list' %}">Back to list</a>
+    <!-- Add New Task -->
+    <form class="todolist-form mb-4" method="POST">
+        {% csrf_token %}
+        <input type="text" name="title" value="{{ todo.title }}" class="form-control mb-2" required>
+        <textarea type="text" name="description" class="form-control mb-2">{{ todo.description }}</textarea>
+        <label>
+            <input type="checkbox" name="completed" {% if todo.completed %}checked{% endif %}> Completed
+        </label>
+        <button type="submit" class="btn btn-dark btn-lg">Save</button>
+    </form>
+</div>
+
+
 {% endblock %}
