@@ -1,20 +1,49 @@
-.body {
-    text-align: center;
-}
-/* 
-.todolist-form {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    width: 40%;
-    min-width: 400px;
-    gap: 1em;
-} */
+   
+    .todolist-tasks {
+        list-style: none;
+        padding-left: 0;
+    }
 
-.todolist-tasks > li {
-    border-bottom: 1px solid lightgray;
-}
+    .todolist-tasks li {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+    }
 
-.todolist-tasks > li:last-child {
-    border-bottom: none;
-}
+    .todolist-tasks li:hover {
+        background-color: #f1f1f1;
+    }
+
+    .task-number {
+        background-color: #343a40;
+        color: #fff;
+        border-radius: 50%;
+        padding: 5px 10px;
+        margin-right: 10px;
+        font-weight: bold;
+    }
+
+    .task-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .task-status.completed {
+        color: green;
+        font-weight: 500;
+    }
+
+    .task-status.not-completed {
+        color: #dc3545; 
+        font-weight: 500;
+    }
+
+    .task-actions a,
+    .task-actions form {
+        display: inline-block;
+        margin-left: 10px;
+    }

@@ -16,11 +16,40 @@ def start_page(request):
 @login_required
 def home(request):
     todos = TodoItem.objects.filter(user=request.user)
-    health_score = health_score_view(request)
-    return render(request, 'home.html', {'todos': todos, 'health_score': health_score})
+    health_data = calculate_health_data(request.user)
+    
+    return render(request, 'home.html', {
+        'todos': todos,
+        'health_score': health_data['health_score'],
+        'big_circle_circumference': health_data['big_circle_circumference'],
+        'score_offset': health_data['score_offset'],
+        'calorie_percent': health_data['calorie_percent'],
+        'water_percent': health_data['water_percent'],
+        'sleep_percent': health_data['sleep_percent'],
+        'calorie_offset': health_data['calorie_offset'],
+        'water_offset': health_data['water_offset'],
+        'sleep_offset': health_data['sleep_offset'],
+        'score_label': health_data['score_label'],
+        'circumference': health_data['circumference'],
+    })
 
-@login_required
+# modified
 def health_score_view(request):
+    if request.method == 'POST':
+        user = request.user
+        today = date.today()
+        entry, created = DailyEntry.objects.get_or_create(user=user, date=today)
+
+        if 'water' in request.POST:
+            water = int(request.POST.get('water', 0))
+            entry.water += water
+        if 'sleep' in request.POST:
+            sleep = int(request.POST.get('sleep', 0))
+            entry.sleep = sleep
+        entry.save()
+
+    health_data = calculate_health_data(request.user)
+    return render(request, 'health_score.html', health_data)
     user = request.user
     today = date.today()
     entry, created = DailyEntry.objects.get_or_create(user=user, date=today)
@@ -82,6 +111,59 @@ def health_score_view(request):
     }
 
     return render(request, 'health_score.html', context)
+
+# Separate function to calculate health data
+def calculate_health_data(user):
+    today = date.today()
+    entry, created = DailyEntry.objects.get_or_create(user=user, date=today)
+
+    total_calories = FoodLog.objects.filter(user=user, date=today).aggregate(Sum('calories'))['calories__sum'] or 0
+
+    goal_calories = 2000
+    goal_water = 8
+    goal_sleep = 8
+    calorie_percent = round(min(total_calories / goal_calories, 1) * 100, 2) if goal_calories > 0 else 0
+    water_percent = round(min(entry.water / goal_water, 1) * 100, 2) if goal_water > 0 else 0
+    sleep_percent = round(min(entry.sleep / goal_sleep, 1) * 100, 2) if goal_sleep > 0 else 0
+    health_score = int((calorie_percent + water_percent) / 2)
+
+    radius = 50
+    circumference = 2 * math.pi * radius
+    big_circle_circumference = 2 * math.pi * (radius + 30)
+    calorie_offset = round(circumference * (1 - (calorie_percent / 100)), 2)
+    water_offset = round(circumference * (1 - (water_percent / 100)), 2)
+    sleep_offset = round(circumference * (1 - (sleep_percent / 100)), 2)
+    score_offset = round(big_circle_circumference * (1 - (health_score / 100)), 2)
+
+    if health_score >= 100:
+        score_label = "Perfect"
+    elif health_score >= 80:
+        score_label = "Excellent"
+    elif health_score >= 60:
+        score_label = "Good"
+    elif health_score >= 40:
+        score_label = "Fair"
+    else:
+        score_label = "Poor"
+
+    return {
+        'calories': entry.calories,
+        'water': entry.water,
+        'goal_calories': goal_calories,
+        'goal_water': goal_water,
+        'calorie_percent': calorie_percent,
+        'water_percent': water_percent,
+        'sleep_percent': sleep_percent,
+        'health_score': health_score,
+        'calorie_offset': calorie_offset,
+        'water_offset': water_offset,
+        'score_offset': score_offset,
+        'sleep_offset': sleep_offset,
+        'score_label': score_label,
+        'circumference': round(circumference, 2),
+        'big_circle_circumference': round(big_circle_circumference, 2),
+    }
+
 
 @login_required
 def calorie_detail(request):

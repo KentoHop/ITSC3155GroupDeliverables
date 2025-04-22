@@ -57,6 +57,30 @@ body {
     color: white;
 }
 
+circle.bg {
+    fill: none;
+    stroke: #e6e6e6;
+    stroke-width: 12;
+}
+
+circle.progress {
+    fill: none;
+    stroke-width: 12;
+    stroke-linecap: round;
+    stroke-dasharray: 502;
+    stroke-dashoffset: 502;
+    transition: stroke-dashoffset 0.5s ease;
+}
+
+svg text {
+    fill: black;
+    font-size: 16px;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    transform-origin: center;
+    cursor: pointer;
+}
+
 /* Features Section */
 .welcome-message {
     margin-bottom: 25px;

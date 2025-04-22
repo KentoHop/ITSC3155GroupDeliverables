@@ -29,3 +29,4 @@ class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
     template_name = 'change_password.html'
     success_message = "Successfully Changed Your Password"
     success_url = reverse_lazy('home')
+
