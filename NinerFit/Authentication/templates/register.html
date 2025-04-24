@@ -30,6 +30,12 @@
   .form-group {
     margin-bottom: 20px;
   }
+
+  .custom-header {
+    background-color: #023f10; /* purple */
+    color: #FFD700;
+  }
+
   label {
     font-weight: bold;
     display: block;
@@ -72,7 +78,7 @@
 {% block content %}
 <div class="register-container">
   <div class="card">
-    <div class="card-header">Register</div>
+    <div class="card-header custom-header">Register</div>
     <div class="card-body">
       <p>Enter your email to sign up for this app.</p>
       {% if error_message %}
@@ -96,9 +102,9 @@
           <label for="password2">Confirm Password</label>
           <input type="password" class="form-control" id="password2" name="password2" required>
         </div>
-        <button type="submit">Register</button>
+        <button type="submit" style="background-color: #023f10; color: #FFD700;">Register</button>
       </form>
-      <a href="{% url 'login' %}"><small>Already signed up?</small></a>
+      <a style="color: #FFD700;" href="{% url 'login' %}"><small>Already signed up?</small></a>
     </div>
   </div>
 </div>
