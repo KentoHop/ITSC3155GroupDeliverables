@@ -204,14 +204,14 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 
-const chartLabels = {{ calorie_labels|safe }};
+const chartLabels = { calorie_labels };
 const dataMap = {
-    calories: {{ calorie_values|safe }},
-    protein: {{ protein_values|safe }},
-    carbs: {{ carbs_values|safe }},
-    fat: {{ fat_values|safe }},
-    sugar: {{ sugar_values|safe }},
-    fiber: {{ fiber_values|safe }},
+    calories: { calorie_values },
+    protein: { protein_values },
+    carbs: { carbs_values },
+    fat: { fat_values },
+    sugar: { sugar_values },
+    fiber: { fiber_values }
 };
 
 const colors = {
@@ -267,7 +267,7 @@ let macroChart = new Chart(ctx2, {
     data: {
         labels: ['Protein', 'Carbs', 'Fats', 'Sugar', 'Fiber'],
         datasets: [{
-            data: {{ macro_values|safe }},
+            data: { macro_values },
             backgroundColor: ['#007bff', '#ffc107', '#dc3545', '#8e44ad', '#1abc9c']
         }]
     }
