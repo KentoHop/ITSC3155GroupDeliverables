@@ -26,12 +26,12 @@
   }
 
   .sent {
-    background-color: #dcf8c6;
+    background-color: #73ce82;
     align-self: flex-end;
   }
 
   .received {
-    background-color: #f1f0f0;
+    background-color: #feec88;
     align-self: flex-start;
   }
 
@@ -42,7 +42,7 @@
     left: 0;
     right: 0;
     padding: 10px;
-    background-color: #f8f9fa;
+    background-color: #b7ffb7;
   }
 
   .message-input {
@@ -61,6 +61,12 @@
     flex-direction: column;
     margin: 1em 12.5%;
   }
+
+  .custom-header {
+    background-color: #023f10; /* purple */
+    color: #FFD700;
+  }
+
 </style>
 {% endblock %}
 
@@ -68,14 +74,11 @@
 {% block content %}
 <div class="chat-container">
   <div class="card flex-grow-1">
-    <div class="card-header bg-primary text-white">{{user.username}}'s Therapy Room</div>
+    <div class="card-header custom-header">{{user.username}}'s Therapy Room</div>
     {% if user.is_authenticated %}
-    <div class="card-header bg-primary text-white"><b>Welcome, {{user.username}}</b> </div>
-    
-   <!---{% else %}
+    <div class="card-header custom-header" ><b>Welcome, {{user.username}}</b> </div>
+    {% else %}
     <div class="card-header bg-primary text-white"><a style="color: red" href="login">Login</a>   <a style="color: red;" href="register">Register</a></div>
-    --->
-    
     {% endif %}
     <div class="card-body messages-box">
       
@@ -126,7 +129,7 @@
       <div class="input-group">
         <input type="text" class="form-control message-input" placeholder="Type your message...">
         <div class="input-group-append">
-          <button type="submit" class="btn btn-primary btn-send">Send</button>
+          <button type="submit" class="btn btn-send" style="background-color: #023f10; color: #FFD700;">Send</button>
         </div>
       </div>
     </form>
