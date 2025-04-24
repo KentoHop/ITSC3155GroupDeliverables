@@ -71,11 +71,8 @@
     <div class="card-header bg-primary text-white">{{user.username}}'s Therapy Room</div>
     {% if user.is_authenticated %}
     <div class="card-header bg-primary text-white"><b>Welcome, {{user.username}}</b> </div>
-    
-   <!---{% else %}
+    {% else %}
     <div class="card-header bg-primary text-white"><a style="color: red" href="login">Login</a>   <a style="color: red;" href="register">Register</a></div>
-    --->
-    
     {% endif %}
     <div class="card-body messages-box">
       
