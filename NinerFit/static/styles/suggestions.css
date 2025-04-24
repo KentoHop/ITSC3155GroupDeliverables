@@ -1,0 +1,7 @@
+.body {
+    text-align: center;
+}
+
+.suggestions-list > li {
+    border-bottom: 1px solid lightgray;
+}
