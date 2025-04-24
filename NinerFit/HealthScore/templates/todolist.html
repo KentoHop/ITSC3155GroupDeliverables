@@ -7,97 +7,140 @@
 {% block styles %}
 <link href="{% static 'styles/todolist.css' %}" rel="stylesheet">
 <style>
+    .todolist-container {
+        padding: 40px 20px;
+    }
     
     .todolist-tasks {
         list-style: none;
         padding-left: 0;
+        margin-top: 20px;
     }
 
     .todolist-tasks li {
-        background-color: #f9f9f9;
+        background-color: #fff;
         border: 1px solid #ddd;
-        padding: 15px;
-        margin-bottom: 10px;
+        padding: 15px 20px;
+        margin-bottom: 15px;
         border-radius: 8px;
-        transition: background-color 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
     }
 
     .todolist-tasks li:hover {
-        background-color: #f1f1f1;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transform: translateY(-2px);
     }
 
     .task-number {
-        background-color: #343a40;
+        background-color: #007bff;
         color: #fff;
         border-radius: 50%;
         padding: 5px 10px;
         margin-right: 10px;
         font-weight: bold;
+        font-size: 0.9rem;
     }
 
     .task-title {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         font-weight: 600;
-        color: #333;
+        color: #343a40;
     }
 
     .task-status.completed {
-        color: green;
+        color: #28a745;
         font-weight: 500;
     }
 
     .task-status.not-completed {
-        color: #dc3545; 
+        color: #dc3545;
         font-weight: 500;
+    }
+
+    .task-actions {
+        margin-top: 10px;
     }
 
     .task-actions a,
     .task-actions form {
         display: inline-block;
-        margin-left: 10px;
+        margin-right: 8px;
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="todolist-container" style="padding: 40px; background-color: #e6f7ff; max-width: 800px; margin: 0 auto; border-radius: 10px;">
-    <h2 class="mb-4">📝 Your To-Do List</h2>
+<div class="form-content my-3 p-3">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg border-0 rounded-lg mt-0 mb-3">
+                    <div class="card-header justify-content-center">
+                        <h3 class="font-weight-light my-4 text-center">📝 Your To-Do List</h3>
+                    </div>
+                    
+                    <div class="card-body">
+                        <!-- Add New Task -->
+                        <form class="mb-4" method="POST" action="{% url 'addtodo' %}">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <input type="text" name="title" placeholder="Task Title" 
+                                               class="form-control mb-2" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <textarea name="description" placeholder="Task Description" 
+                                                  class="form-control mb-2" rows="2"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-dark btn-block">Add Task</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
 
-    <!-- Add New Task -->
-    <form class="todolist-form mb-4" method="POST" action="{% url 'addtodo' %}">
-        {% csrf_token %}
-        <input type="text" name="title" placeholder="Task Title" class="form-control mb-2" required>
-        <textarea name="description" placeholder="Task Description" class="form-control mb-2"></textarea>
-        <button type="submit" class="btn btn-dark btn-lg">Add Task</button>
-    </form>
+                        <!-- Display Tasks -->
+                        <ul class="todolist-tasks">
+                            {% for todo in todos %}
+                                <li>
+                                    <span class="task-number">{{ forloop.counter }}</span>
+                                    <span class="task-title">{{ todo.title }}</span>
+                                    <p class="mb-1">{{ todo.description }}</p>
+                                    <div class="task-status {% if todo.completed %}completed{% else %}not-completed{% endif %}">
+                                        {% if todo.completed %}
+                                            Completed ✅ 
+                                        {% else %}
+                                            Not Completed ❌
+                                        {% endif %}
+                                    </div>
 
-    <!-- Display Tasks -->
-    <ul class="todolist-tasks">
-        {% for todo in todos %}
-            <li>
-                <span class="task-number">{{ forloop.counter }}</span>
-                <span class="task-title">{{ todo.title }}</span> – {{ todo.description }}
-                <div class="task-status {% if todo.completed %}completed{% else %}not-completed{% endif %}">
-                    {% if todo.completed %}
-                        Completed ✅ 
-                    {% else %}
-                        Not Completed ❌
-                    {% endif %}
+                                    <div class="task-actions">
+                                        <a href="{% url 'updatetodo' todo.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                                        
+                                    </div>
+                                </li>
+                            {% empty %}<form method="POST" action="{% url 'deletetodo' todo.id %}" style="display:inline;" onsubmit="return confirmDelete();">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                        </form>
+                                <li class="text-center py-3">No tasks yet. Add your first task above!</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
-
-                <div class="task-actions mt-2">
-                    <a href="{% url 'updatetodo' todo.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
-
-                    <form method="POST" action="{% url 'deletetodo' todo.id %}" style="display:inline;" onsubmit="return confirmDelete();">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                    </form>
-                </div>
-            </li>
-        {% empty %}
-            <li>No tasks yet.</li>
-        {% endfor %}
-    </ul>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>

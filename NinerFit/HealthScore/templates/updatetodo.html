@@ -10,12 +10,19 @@
     <form class="todolist-form mb-4" method="POST">
         {% csrf_token %}
         <input type="text" name="title" value="{{ todo.title }}" class="form-control mb-2" required>
-        <textarea type="text" name="description" class="form-control mb-2">{{ todo.description }}</textarea>
+        <textarea type="text" name="description" value="{{ todo.description }}" class="form-control mb-2"></textarea>
         <label>
             <input type="checkbox" name="completed" {% if todo.completed %}checked{% endif %}> Completed
         </label>
+        <form method="POST" action="{% url 'deletetodo' todo.id %}" style="display:inline;" onsubmit="return confirmDelete();">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-dark btn-lg">Delete</button>
+        
         <button type="submit" class="btn btn-dark btn-lg">Save</button>
+        </form>
     </form>
+    <a href="{% url 'to-do-list' %}" class="btn btn-sm btn-outline-danger">Back to list</a>
+
 </div>
 
 
