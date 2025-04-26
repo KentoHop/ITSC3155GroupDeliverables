@@ -13,3 +13,115 @@
 .todolist-tasks > li {
     border-bottom: 1px solid lightgray;
 }
+
+/* testing-monkpeh branch */
+.todolist-container {
+    padding: 40px 20px;
+}
+
+.todolist-tasks {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 20px;
+}
+
+.todolist-tasks li {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.todolist-tasks li:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.task-number {
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 50%;
+    padding: 5px 10px;
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.task-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #343a40;
+}
+
+.task-status.completed {
+    color: #28a745;
+    font-weight: 500;
+}
+
+.task-status.not-completed {
+    color: #dc3545;
+    font-weight: 500;
+}
+
+.task-actions {
+    margin-top: 10px;
+}
+
+.task-actions a,
+.task-actions form {
+    display: inline-block;
+    margin-right: 8px;
+}
+
+
+.todolist-tasks {
+    list-style: none;
+    padding-left: 0;
+}
+
+.todolist-tasks li {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.todolist-tasks li:hover {
+    background-color: #f1f1f1;
+}
+
+.task-number {
+    background-color: #343a40;
+    color: #fff;
+    border-radius: 50%;
+    padding: 5px 10px;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.task-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.task-status.completed {
+    color: green;
+    font-weight: 500;
+}
+
+.task-status.not-completed {
+    color: #dc3545; 
+    font-weight: 500;
+}
+
+.task-actions a,
+.task-actions form {
+    display: inline-block;
+    margin-left: 10px;
+}

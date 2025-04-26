@@ -53,6 +53,6 @@ def deleteTodo(request, pk):
     if request.method == 'POST':
         todo.delete()
         messages.success(request, 'Task deleted successfully')
-        return redirect('todolist')
+        return redirect(request.META.get('HTTP_REFERER', 'to-do-list'))
     return render(request, 'HealthScore/templates/deletetodo.html', {'todo': todo})
 

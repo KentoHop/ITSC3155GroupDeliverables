@@ -46,4 +46,4 @@ NinerFit/main/migrations/0004_foodlog_carbs_foodlog_fat_foodlog_fiber_and_more.p
 NinerFit/main/migrations/__pycache__/__init__.cpython-39.pyc
 NinerFit/main/migrations/__pycache__/__init__.cpython-312.pyc
 env/
-NinerFit/db.sqlite3
+venv/
