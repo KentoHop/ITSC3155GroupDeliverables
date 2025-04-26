@@ -9,6 +9,7 @@ import math
 from django.conf import settings
 import requests
 from django.db.models import Sum
+
 import os
 
 # Create or import suggestion_generate module
@@ -42,7 +43,6 @@ except ImportError:
             if fiber < 25:
                 suggestions.append("Try to include more fiber-rich foods in your meals.")
         return suggestions
-
 
 def start_page(request):
     return render(request, 'start.html')
@@ -250,6 +250,7 @@ def calorie_detail(request):
             # Bulk create
             FoodLog.objects.bulk_create(new_logs)
             return redirect('calorie_detail')
+
         elif request.POST.get('food', ''):
             food = request.POST.get('food')
             cals = int(request.POST.get('calories', 0) or 0)
@@ -418,7 +419,6 @@ def water_detail(request):
         'water_range': range(1, 9),
     })
 
-
 @login_required
 def sleep_detail(request):
     user = request.user
@@ -454,6 +454,14 @@ def sleep_detail(request):
             entry.save()
             return redirect('sleep_detail')
     
+    # Store in session for suggestions
+    request.session['suggestion_sleep'] = entry.sleep
+
+    # Get sleep data for past 7 days in one query
+    days = [today - timedelta(days=i) for i in range(7)]
+    entries = DailyEntry.objects.filter(user=user, date__in=days)
+    entries_dict = {entry.date: entry for entry in entries}
+
     # Store in session for suggestions
     request.session['suggestion_sleep'] = entry.sleep
 
