@@ -9,40 +9,10 @@ import math
 from django.conf import settings
 import requests
 from django.db.models import Sum
-
 import os
-
-# Create or import suggestion_generate module
-try:
-    from suggestion_generate import generate_health_suggestion
-except ImportError:
-    # Fallback implementation if module doesn't exist
-    def generate_health_suggestion(calories=None, sleep=None, water=None, streak=None, macros=None):
-        suggestions = []
-        if calories is not None:
-            if calories < 1200:
-                suggestions.append("Try to increase your calorie intake with nutritious foods.")
-            elif calories > 2200:
-                suggestions.append("Consider reducing your calorie intake slightly.")
-        if sleep is not None:
-            if sleep < 7:
-                suggestions.append("Aim for 7-9 hours of sleep for optimal health.")
-            else:
-                suggestions.append("Great job maintaining a healthy sleep schedule!")
-        if water is not None:
-            if water < 8:
-                suggestions.append(f"Try to drink {8-water} more glasses of water today.")
-            else:
-                suggestions.append("You're doing great with hydration!")
-        if streak is not None and streak > 3:
-            suggestions.append(f"Amazing! You've maintained your goals for {streak} days.")
-        if macros is not None and all(v is not None for v in macros):
-            protein, carbs, fat, sugar, fiber = macros
-            if protein < 50:
-                suggestions.append("Consider adding more protein to your diet.")
-            if fiber < 25:
-                suggestions.append("Try to include more fiber-rich foods in your meals.")
-        return suggestions
+from .suggestion_generate import generate_health_suggestion # Update: Combined fallback function within generate_health_suggestion().
+    
+        
 
 def start_page(request):
     return render(request, 'start.html')
@@ -75,7 +45,7 @@ def home(request):
         'sleep_offset': health_data['sleep_offset'],
         'score_label': health_data['score_label'],
         'circumference': health_data['circumference'],
-        'suggestions': ai_suggestions
+        'suggestions': ai_suggestions,
     }
     return render(request, 'home.html', context)
 
@@ -95,7 +65,18 @@ def health_score_view(request):
             entry.sleep = sleep
         entry.save()
 
+    # Added suggestions to health score page
+    ai_suggestions = generate_health_suggestion(
+        calories=request.session.get('suggestion_calories'),
+        sleep=request.session.get('suggestion_sleep'),
+        water=request.session.get('suggestion_water'),
+        streak=request.session.get('suggestion_streak'),
+        macros=request.session.get('suggestion_macro_values')
+    )
+
     health_data = calculate_health_data(request.user)
+    health_data.update({ 'suggestions': ai_suggestions }) # Added suggestions to health score page
+
     return render(request, 'health_score.html', health_data)
 
     user = request.user

@@ -34,7 +34,7 @@ def generate_health_suggestion(calories, sleep, water, streak, macros):
 
     try:
         response = client.chat.completions.create(
-            model="gpt-4.0-mini",
+            model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
             max_tokens=300,
             temperature=0.8,
@@ -50,9 +50,28 @@ def generate_health_suggestion(calories, sleep, water, streak, macros):
         return suggestions
 
     except Exception as e:
-        return {
-            "Calories and Nutrition": "Try to stay on track with your macros today!",
-            "Sleep": "Aim for a more consistent sleep schedule.",
-            "Hydration": "Keep sipping water throughout the day.",
-            "Motivation": "You're doing great — stay consistent!"
-        }
+        suggestions = {}
+        if calories is not None:
+            if calories < 1200:
+                suggestions.update({"Calories and Nutrition": "Try to increase your calorie intake with nutritious foods."})
+            elif calories > 2200:
+                suggestions.update({"Calories and Nutrition": "Consider reducing your calorie intake slightly."})
+        if sleep is not None:
+            if sleep < 7:
+                suggestions.update({"Sleep": "Aim for 7-9 hours of sleep for optimal health."})
+            else:
+                suggestions.update({"Sleep": "Great job maintaining a healthy sleep schedule!"})
+        if water is not None:
+            if water < 8:
+                suggestions.update({"Hydration": f"Try to drink {8-water} more glasses of water today."})
+            else:
+                suggestions.update({"Hydration": "You're doing great with hydration!"})
+        if streak is not None and streak > 3:
+            suggestions.update({"Motivation": f"Amazing! You've maintained your goals for {streak} days."})
+        if macros is not None and all(v is not None for v in macros):
+            protein, carbs, fat, sugar, fiber = macros
+            if protein < 50:
+                suggestions.update({"Calories and Nutrition": "Consider adding more protein to your diet."})
+            if fiber < 25:
+                suggestions.update({"Calories and Nutrition": "Try to include more fiber-rich foods in your meals."})
+        return suggestions

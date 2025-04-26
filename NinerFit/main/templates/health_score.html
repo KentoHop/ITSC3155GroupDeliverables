@@ -86,7 +86,7 @@
 
     .health-score-grid {
         display: grid;
-        grid-template-columns: 1fr 3fr;
+        grid-template-columns: 1fr 2fr;
     }
 
     .suggestions-column {
@@ -97,15 +97,14 @@
 
 {% block content %}
 <div class="health-container">
-    <div class="health-header">
-        <h1>Health Score</h1>
-    </div>
-
     <div class="health-score-grid">
         <div class="suggestions-column">
             {% include "suggestions.html" %}
         </div>
         <div class="score-column">
+            <div class="health-header">
+                <h1>Health Score</h1>
+            </div>
             <div class="centered-ring">
                 <svg width="200" height="200" viewBox="0 0 200 200" style="transform: rotate(-90deg);">
                     <circle class="bg" cx="100" cy="100" r="80" />
