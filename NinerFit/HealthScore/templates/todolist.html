@@ -7,45 +7,83 @@
 {% block styles %}<link href="{% static 'styles/todolist.css' %}" rel="stylesheet">{% endblock %}
 
 {% block content %}
-<h2>Your To-Do List</h2>
+<div class="form-content my-3 p-3">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg border-0 rounded-lg mt-0 mb-3">
+                    <div class="card-header justify-content-center">
+                        <h2 class="font-weight-light my-4 text-center">📝 Your To-Do List</h2>
+                    </div>
+                    
+                    <div class="card-body">
+                        <!-- Add New Task -->
+                        <form class="mb-4" method="POST" action="{% url 'addtodo' %}">
+                            {% csrf_token %}
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <input type="text" name="title" placeholder="Task Title" 
+                                               class="form-control mb-2" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <textarea name="description" placeholder="Task Description" 
+                                                  class="form-control mb-2" rows="2"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-dark btn-block">Add Task</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
 
-<!-- Add New Task -->
-<form class="todolist-form" method="POST" action="{% url 'addtodo' %}">
-    {% csrf_token %}
-    <input type="text" name="title" placeholder="Task Title" class="form-control" required>
-    <textarea name="description" placeholder="Task Description" class="form-control"></textarea>
-    <button type="submit" class="btn btn-dark btn-lg">Add Task</button>
-</form>
+                        <!-- Display Tasks -->
+                        <ul class="todolist-tasks">
+                            {% if todos %}
+                            {% for todo in todos %}
+                                <li>
+                                    <span class="task-number">{{ forloop.counter }}</span>
+                                    <span class="task-title">{{ todo.title }}</span>
+                                    <p class="mb-1">{{ todo.description }}</p>
+                                    <div class="task-status {% if todo.completed %}completed{% else %}not-completed{% endif %}">
+                                        {% if todo.completed %}
+                                            Completed ✅ 
+                                        {% else %}
+                                            Not Completed ❌
+                                        {% endif %}
+                                    </div>
 
-<hr>
-
-<!-- Display Tasks -->
-<ul class="todolist-tasks">
-    {% for todo in todos %}
-        <li>
-            <strong>{{ todo.title }}</strong> - {{ todo.description }} 
-            {% if todo.completed %}
-                Completed ✅ 
-            {% else %}
-                Not Completed ❌
-            {% endif %}
-            <br>
-            <a href="{% url 'updatetodo' todo.id %}">Edit</a> |
-            <form method="POST" action="{% url 'deletetodo' todo.id %}"  onsubmit="return confirmDelete();">
-                {% csrf_token %}
-                Delete
-            </form><!-- Add a JavaScript function to confirm deletion -->
-        </li>
-    {% empty %}
-        <li>No tasks yet.</li>
-    {% endfor %}
-</ul>
+                                    <div class="task-actions">
+                                        <a href="{% url 'updatetodo' todo.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                                        <form method="POST" action="{% url 'deletetodo' todo.id %}" style="display:inline;" onsubmit="return confirmDelete();">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                        </form>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                            {% else %}
+                                <li class="text-center py-3">No tasks yet. Add your first task above!</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     function confirmDelete() {
         return confirm("Are you sure you want to delete this task?");
     }
 </script>
-
-
 {% endblock %}

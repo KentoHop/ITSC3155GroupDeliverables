@@ -1,22 +1,21 @@
-{% extends 'base.html' %}
-
 {% load static %}
-
-{% block title %}Suggestions{% endblock %}
 
 {% block styles %}<link href="{% static 'styles/suggestions.css' %}" rel="stylesheet">{% endblock %}
 
 {% block content %}
 
-<!-- Display Tasks -->
-<ul class="todolist-tasks">
-    {% for suggestion in suggestions %}
-        <li>
-            <strong>{{ suggestion }}</strong>
-        </li>
-    {% empty %}
-        <li>No suggestion yet.</li>
-    {% endfor %}
-</ul>
+<div class="suggestions-container">
+    <h3 class="suggestions-header">Suggestions</h3>
+    <ul class="suggestions-list">
+        {% for suggestion in suggestions.values %}
+            <li>
+                {{ suggestion }}
+            </li>
+        {% empty %}
+            <li>No suggestions yet.</li>
+        {% endfor %}
+    </ul>
+
+</div>
 
 {% endblock %}

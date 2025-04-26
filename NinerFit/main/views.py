@@ -4,44 +4,15 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from datetime import date, timedelta
 from .models import DailyEntry, FoodLog
+from HealthScore.models import TodoItem
 import math
 from django.conf import settings
 import requests
 from django.db.models import Sum
 import os
-
-# Create or import suggestion_generate module
-try:
-    from suggestion_generate import generate_health_suggestion
-except ImportError:
-    # Fallback implementation if module doesn't exist
-    def generate_health_suggestion(calories=None, sleep=None, water=None, streak=None, macros=None):
-        suggestions = []
-        if calories is not None:
-            if calories < 1200:
-                suggestions.append("Try to increase your calorie intake with nutritious foods.")
-            elif calories > 2200:
-                suggestions.append("Consider reducing your calorie intake slightly.")
-        if sleep is not None:
-            if sleep < 7:
-                suggestions.append("Aim for 7-9 hours of sleep for optimal health.")
-            else:
-                suggestions.append("Great job maintaining a healthy sleep schedule!")
-        if water is not None:
-            if water < 8:
-                suggestions.append(f"Try to drink {8-water} more glasses of water today.")
-            else:
-                suggestions.append("You're doing great with hydration!")
-        if streak is not None and streak > 3:
-            suggestions.append(f"Amazing! You've maintained your goals for {streak} days.")
-        if macros is not None and all(v is not None for v in macros):
-            protein, carbs, fat, sugar, fiber = macros
-            if protein < 50:
-                suggestions.append("Consider adding more protein to your diet.")
-            if fiber < 25:
-                suggestions.append("Try to include more fiber-rich foods in your meals.")
-        return suggestions
-
+from .suggestion_generate import generate_health_suggestion # Update: Combined fallback function within generate_health_suggestion().
+    
+        
 
 def start_page(request):
     return render(request, 'start.html')
@@ -49,11 +20,55 @@ def start_page(request):
 
 @login_required
 def home(request):
-    return render(request, 'home.html')
+    todos = TodoItem.objects.filter(user=request.user)
+    health_data = calculate_health_data(request.user)
+
+    # Generate suggestions
+    ai_suggestions = generate_health_suggestion(
+        calories=request.session.get('suggestion_calories'),
+        sleep=request.session.get('suggestion_sleep'),
+        water=request.session.get('suggestion_water'),
+        streak=request.session.get('suggestion_streak'),
+        macros=request.session.get('suggestion_macro_values')
+    )
+
+    context = {
+        'todos': todos,
+        'suggestions': ai_suggestions,
+    }
+    context.update(health_data)
+    return render(request, 'home.html', context)
 
 
 @login_required
 def health_score_view(request):
+    if request.method == 'POST':
+        user = request.user
+        today = date.today()
+        entry, created = DailyEntry.objects.get_or_create(user=user, date=today)
+
+        if 'water' in request.POST:
+            water = int(request.POST.get('water', 0))
+            entry.water += water
+        if 'sleep' in request.POST:
+            sleep = int(request.POST.get('sleep', 0))
+            entry.sleep = sleep
+        entry.save()
+
+    # Added suggestions to health score page
+    ai_suggestions = generate_health_suggestion(
+        calories=request.session.get('suggestion_calories'),
+        sleep=request.session.get('suggestion_sleep'),
+        water=request.session.get('suggestion_water'),
+        streak=request.session.get('suggestion_streak'),
+        macros=request.session.get('suggestion_macro_values')
+    )
+
+    health_data = calculate_health_data(request.user)
+    health_data.update({ 'suggestions': ai_suggestions }) # Added suggestions to health score page
+
+    return render(request, 'health_score.html', health_data)
+
     user = request.user
     today = date.today()
     entry, created = DailyEntry.objects.get_or_create(user=user, date=today)
@@ -72,13 +87,23 @@ def health_score_view(request):
     # Store in session for suggestions
     request.session['suggestion_calories'] = total_calories
 
+    context = {}
+    context.update(health_data)
+    return render(request, 'health_score.html', context)
+
+def calculate_health_data(user):
+    today = date.today()
+    entry, created = DailyEntry.objects.get_or_create(user=user, date=today)
+
+    total_calories = FoodLog.objects.filter(user=user, date=today).aggregate(Sum('calories'))['calories__sum'] or 0
+
     goal_calories = 2000
     goal_water = 8
     goal_sleep = 8
     calorie_percent = round(min(total_calories / goal_calories, 1) * 100, 2) if goal_calories > 0 else 0
     water_percent = round(min(entry.water / goal_water, 1) * 100, 2) if goal_water > 0 else 0
     sleep_percent = round(min(entry.sleep / goal_sleep, 1) * 100, 2) if goal_sleep > 0 else 0
-    health_score = int((calorie_percent + water_percent + sleep_percent) / 3)  # Added sleep to calculation
+    health_score = int((calorie_percent + water_percent) / 2)
 
     radius = 50
     circumference = 2 * math.pi * radius
@@ -99,7 +124,7 @@ def health_score_view(request):
     else:
         score_label = "Poor"
 
-    context = {
+    return {
         'total_calories': total_calories,
         'water': entry.water,
         'sleep': entry.sleep,
@@ -119,7 +144,6 @@ def health_score_view(request):
         'big_circle_circumference': round(big_circle_circumference, 2),
     }
 
-    return render(request, 'health_score.html', context)
 
 
 @login_required
@@ -165,6 +189,7 @@ def calorie_detail(request):
             # Bulk create
             FoodLog.objects.bulk_create(new_logs)
             return redirect('calorie_detail')
+
         elif request.POST.get('food', ''):
             food = request.POST.get('food')
             cals = int(request.POST.get('calories', 0) or 0)
@@ -333,7 +358,6 @@ def water_detail(request):
         'water_range': range(1, 9),
     })
 
-
 @login_required
 def sleep_detail(request):
     user = request.user
@@ -369,6 +393,14 @@ def sleep_detail(request):
             entry.save()
             return redirect('sleep_detail')
     
+    # Store in session for suggestions
+    request.session['suggestion_sleep'] = entry.sleep
+
+    # Get sleep data for past 7 days in one query
+    days = [today - timedelta(days=i) for i in range(7)]
+    entries = DailyEntry.objects.filter(user=user, date__in=days)
+    entries_dict = {entry.date: entry for entry in entries}
+
     # Store in session for suggestions
     request.session['suggestion_sleep'] = entry.sleep
 
