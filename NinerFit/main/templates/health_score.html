@@ -83,85 +83,102 @@
         align-items: center;
         margin-bottom: 20px;
     }
+
+    .health-score-grid {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+    }
+
+    .suggestions-column {
+        border-right: 1px solid lightgray;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="health-container">
     <div class="health-header">
-        <h1>NinerFit</h1>
-        <p>Health Score</p>
+        <h1>Health Score</h1>
     </div>
 
-    <div class="centered-ring">
-        <svg width="200" height="200" viewBox="0 0 200 200" style="transform: rotate(-90deg);">
-            <circle class="bg" cx="100" cy="100" r="80" />
-            <circle class="progress" cx="100" cy="100" r="80"
-                    style="stroke: 
-                        {% if health_score >= 80 %}
-                            #28a745
-                        {% elif health_score >= 60 %}
-                            #ffc107
-                        {% elif health_score >= 40 %}
-                            #fd7e14
-                        {% else %}
-                            #dc3545
-                        {% endif %};
-                        stroke-dasharray: {{ big_circle_circumference }};
-                        stroke-dashoffset: {{ score_offset }};" />
-            <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" style="font-size: 32px; transform: rotate(90deg);" onclick="window.location.href='{% url 'health_score' %}'">
-                {{ health_score }}
-            </text>
-        </svg>
-        <div style="text-align:center; margin-top: 10px;">
-            {% if health_score == 100 %}
-                <span class="badge" style="background-color: #28a745;">Perfect</span>
-            {% elif health_score >= 80 %}
-                <span class="badge" style="background-color: #6bd332;">Excellent</span>
-            {% elif health_score >= 60 %}
-                <span class="badge" style="background-color: #ffc107;">Good</span>
-            {% elif health_score >= 40 %}
-                <span class="badge" style="background-color: #fd7e14;">Fair</span>
-            {% else %}
-                <span class="badge" style="background-color: #dc3545;">Poor</span>
-            {% endif %}
+    <div class="health-score-grid">
+        <div class="suggestions-column">
+            {% include "suggestions.html" %}
+        </div>
+        <div class="score-column">
+            <div class="centered-ring">
+                <svg width="200" height="200" viewBox="0 0 200 200" style="transform: rotate(-90deg);">
+                    <circle class="bg" cx="100" cy="100" r="80" />
+                    <circle class="progress" cx="100" cy="100" r="80"
+                            style="stroke: 
+                                {% if health_score >= 80 %}
+                                    #28a745
+                                {% elif health_score >= 60 %}
+                                    #ffc107
+                                {% elif health_score >= 40 %}
+                                    #fd7e14
+                                {% else %}
+                                    #dc3545
+                                {% endif %};
+                                stroke-dasharray: {{ big_circle_circumference }};
+                                stroke-dashoffset: {{ score_offset }};" />
+                    <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" style="font-size: 32px; transform: rotate(90deg);" onclick="window.location.href='{% url 'health_score' %}'">
+                        {{ health_score }}
+                    </text>
+                </svg>
+                <div style="text-align:center; margin-top: 10px;">
+                    {% if health_score == 100 %}
+                        <span class="badge" style="background-color: #28a745;">Perfect</span>
+                    {% elif health_score >= 80 %}
+                        <span class="badge" style="background-color: #6bd332;">Excellent</span>
+                    {% elif health_score >= 60 %}
+                        <span class="badge" style="background-color: #ffc107;">Good</span>
+                    {% elif health_score >= 40 %}
+                        <span class="badge" style="background-color: #fd7e14;">Fair</span>
+                    {% else %}
+                        <span class="badge" style="background-color: #dc3545;">Poor</span>
+                    {% endif %}
+                </div>
+            </div>
+        
+            <!-- Sub-metric Rings -->
+            <div class="ring-grid">
+                <!-- Calories -->
+                <div class="progress-ring">
+                    <svg width="120" height="120" style="transform: rotate(-90deg);">
+                        <circle class="bg" cx="60" cy="60" r="50" />
+                        <circle class="progress" cx="60" cy="60" r="50"
+                                style="stroke: #28a745; stroke-dasharray: {{ circumference }}; stroke-dashoffset: {{ calorie_offset }};" />
+                        <text x="50%" y="40%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'calorie_detail' %}'">{{ calorie_percent }}%</text>
+                        <text x="50%" y="58%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'calorie_detail' %}'">Calories</text>
+                    </svg>
+                </div>
+        
+                <!-- Water -->
+                <div class="progress-ring">
+                    <svg width="120" height="120" style="transform: rotate(-90deg);">
+                        <circle class="bg" cx="60" cy="60" r="50" />
+                        <circle class="progress" cx="60" cy="60" r="50"
+                                style="stroke: #007bff; stroke-dasharray: {{ circumference }}; stroke-dashoffset: {{ water_offset }};" />
+                        <text x="50%" y="40%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'water_detail' %}'">{{ water_percent }}%</text>
+                        <text x="50%" y="58%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'water_detail' %}'">Water</text>
+                    </svg>
+                </div>
+        
+                <!-- Sleep -->
+                <div class="progress-ring">
+                    <svg width="120" height="120" style="transform: rotate(-90deg);">
+                        <circle class="bg" cx="60" cy="60" r="50" />
+                        <circle class="progress" cx="60" cy="60" r="50"
+                                style="stroke: #6c757d; stroke-dasharray: {{ circumference }}; stroke-dashoffset: {{ sleep_offset }};" />
+                        <text x="50%" y="40%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'sleep_detail' %}'">{{ sleep_percent }}%</text>
+                        <text x="50%" y="58%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'sleep_detail' %}'">Sleep</text>
+                    </svg>
+                </div>
+            </div>
         </div>
     </div>
-
-    <!-- Sub-metric Rings -->
-    <div class="ring-grid">
-        <!-- Calories -->
-        <div class="progress-ring">
-            <svg width="120" height="120" style="transform: rotate(-90deg);">
-                <circle class="bg" cx="60" cy="60" r="50" />
-                <circle class="progress" cx="60" cy="60" r="50"
-                        style="stroke: #28a745; stroke-dasharray: {{ circumference }}; stroke-dashoffset: {{ calorie_offset }};" />
-                <text x="50%" y="40%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'calorie_detail' %}'">{{ calorie_percent }}%</text>
-                <text x="50%" y="58%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'calorie_detail' %}'">Calories</text>
-            </svg>
-        </div>
-
-        <!-- Water -->
-        <div class="progress-ring">
-            <svg width="120" height="120" style="transform: rotate(-90deg);">
-                <circle class="bg" cx="60" cy="60" r="50" />
-                <circle class="progress" cx="60" cy="60" r="50"
-                        style="stroke: #007bff; stroke-dasharray: {{ circumference }}; stroke-dashoffset: {{ water_offset }};" />
-                <text x="50%" y="40%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'water_detail' %}'">{{ water_percent }}%</text>
-                <text x="50%" y="58%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'water_detail' %}'">Water</text>
-            </svg>
-        </div>
-
-        <!-- Sleep -->
-        <div class="progress-ring">
-            <svg width="120" height="120" style="transform: rotate(-90deg);">
-                <circle class="bg" cx="60" cy="60" r="50" />
-                <circle class="progress" cx="60" cy="60" r="50"
-                        style="stroke: #6c757d; stroke-dasharray: {{ circumference }}; stroke-dashoffset: {{ sleep_offset }};" />
-                <text x="50%" y="40%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'sleep_detail' %}'">{{ sleep_percent }}%</text>
-                <text x="50%" y="58%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'sleep_detail' %}'">Sleep</text>
-            </svg>
-        </div>
-    </div>
+    
+    
 </div>
 {% endblock %}

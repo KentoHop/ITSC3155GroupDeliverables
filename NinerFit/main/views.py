@@ -53,7 +53,16 @@ def home(request):
     todos = TodoItem.objects.filter(user=request.user)
     health_data = calculate_health_data(request.user)
 
-    return render(request, 'home.html', {
+    # Added suggestions to home page
+    ai_suggestions = generate_health_suggestion(
+        calories=request.session.get('suggestion_calories'),
+        sleep=request.session.get('suggestion_sleep'),
+        water=request.session.get('suggestion_water'),
+        streak=request.session.get('suggestion_streak'),
+        macros=request.session.get('suggestion_macro_values')
+    )
+
+    context = {
         'todos': todos,
         'health_score': health_data['health_score'],
         'big_circle_circumference': health_data['big_circle_circumference'],
@@ -66,7 +75,9 @@ def home(request):
         'sleep_offset': health_data['sleep_offset'],
         'score_label': health_data['score_label'],
         'circumference': health_data['circumference'],
-    })
+        'suggestions': ai_suggestions
+    }
+    return render(request, 'home.html', context)
 
 
 @login_required

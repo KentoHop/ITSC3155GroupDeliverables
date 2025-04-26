@@ -2,6 +2,16 @@
     text-align: center;
 }
 
-.suggestions-list > li {
-    border-bottom: 1px solid lightgray;
+.suggestions-container {
+    margin: 10px;
+    max-width: 400px;
+}
+
+.suggestions-header {
+    text-align: center;
+    font-size: x-large;
+}
+
+.suggestions-list {
+    list-style: square;
 }

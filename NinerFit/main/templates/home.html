@@ -4,10 +4,7 @@
 
 {% block title %}Home - NinerFit App{% endblock %}
 
-{% block styles %}
-<link href="{% static 'styles/home.css' %}" rel="stylesheet">
-
-{% endblock %}
+{% block styles %}<link href="{% static 'styles/home.css' %}" rel="stylesheet">{% endblock %}
 
 {% block content %}
 {% if request.user.is_authenticated %}
@@ -35,7 +32,7 @@
                     {{ health_score }}
                 </text>
             </svg>
-            <div style="text-align:center; margin-top: 10px;">
+            <div style="text-align:center; margin: 10px;">
                 {% if health_score == 100 %}
                     <span class="badge" style="background-color: #28a745;">Perfect</span>
                 {% elif health_score >= 80 %}
@@ -48,8 +45,10 @@
                     <span class="badge" style="background-color: #dc3545;">Poor</span>
                 {% endif %}
             </div>
+            
         </div>
-    
+        
+        {% include "suggestions.html" %}
 
     </section>
 
@@ -64,7 +63,7 @@
             <article class="feature-card">
                 <h3>Health Score</h3>
                 <p>Track your health with personalized scores based on your lifestyle.</p>
-                <a href="#" class="feature-link">Learn More →</a>
+                <a href="{% url 'health_score' %}" class="feature-link">Learn More →</a>
             </article>
             
             <article class="feature-card">
@@ -76,7 +75,7 @@
             <article class="feature-card">
                 <h3>Suggestions</h3>
                 <p>Get health tips and recommendations tailored to you.</p>
-                <a href="#" class="feature-link">View Suggestions →</a>
+                <a href="{% url 'health_score' %}" class="feature-link">View Suggestions →</a>
             </article>
             
             <article class="feature-card">
