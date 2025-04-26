@@ -3,6 +3,16 @@ body, html {
     height: auto;
 }
 
+.bg-primary {
+    background-color: #3f4156 !important;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #3f4156 !important;
+    border-color: #3f4156 !important;
+  }
+
 .messages-box {
     flex: 1;
     overflow-y: auto;

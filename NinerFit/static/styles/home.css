@@ -101,7 +101,7 @@ svg text {
 
 .feature-card {
     background: #f8faff;
-    border-left: 4px solid #4a90e2;
+    border-left: 4px solid #a49665;
     padding: 20px;
     border-radius: 8px;
     transition: all 0.3s ease;
@@ -121,7 +121,7 @@ svg text {
     display: inline-block;
     margin-top: 10px;
     font-weight: 600;
-    color: #4a90e2;
+    color: #a49665;
     text-decoration: none;
 }
 
@@ -156,7 +156,7 @@ svg text {
 }
 
 .todo-number {
-    background: #4a90e2;
+    background: #3f4156;
     color: white;
     width: 24px;
     height: 24px;

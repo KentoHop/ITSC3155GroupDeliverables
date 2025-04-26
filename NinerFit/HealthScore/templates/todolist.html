@@ -47,6 +47,7 @@
 
                         <!-- Display Tasks -->
                         <ul class="todolist-tasks">
+                            {% if todos %}
                             {% for todo in todos %}
                                 <li>
                                     <span class="task-number">{{ forloop.counter }}</span>
@@ -62,15 +63,16 @@
 
                                     <div class="task-actions">
                                         <a href="{% url 'updatetodo' todo.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
-                                        
-                                    </div>
-                                </li>
-                            <form method="POST" action="{% url 'deletetodo' todo.id %}" style="display:inline;" onsubmit="return confirmDelete();">
+                                        <form method="POST" action="{% url 'deletetodo' todo.id %}" style="display:inline;" onsubmit="return confirmDelete();">
                                             {% csrf_token %}
                                             <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
                                         </form>
-                                <li class="text-center py-3">No tasks yet. Add your first task above!</li>
+                                    </div>
+                                </li>
                             {% endfor %}
+                            {% else %}
+                                <li class="text-center py-3">No tasks yet. Add your first task above!</li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>

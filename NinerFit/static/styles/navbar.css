@@ -1,3 +1,7 @@
+header {
+    background-color: #3f4156;
+}
+
 .navbar-container {
     position: relative;
     display: flex;
@@ -12,9 +16,16 @@
 .navbar-logo {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-end;
     gap: 1em;
     margin: .5em;
+    > h1 {
+        color: white;
+    }
+}
+
+.navbar-logo:hover {
+    text-decoration: none;
 }
 
 .navbar-links {
@@ -22,6 +33,15 @@
     align-items: center;
     justify-content: space-between;
     gap: 2em;
+    > a {
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        padding: 5px;
+    }
+    > a:hover {
+        background-color: #585b7a;
+    }
 }
 
 /* Mobile styles */
