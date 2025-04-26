@@ -9,6 +9,7 @@ import math
 from django.conf import settings
 import requests
 from django.db.models import Sum
+<<<<<<< HEAD
 import os
 
 # Create or import suggestion_generate module
@@ -42,6 +43,8 @@ except ImportError:
             if fiber < 25:
                 suggestions.append("Try to include more fiber-rich foods in your meals.")
         return suggestions
+=======
+>>>>>>> 9ceb8997f7cbbd8d77d84721d272371b71027f0d
 
 def start_page(request):
     return render(request, 'start.html')
@@ -464,6 +467,7 @@ def usda_food_search(request):
             'fiber': fiber,
         })
 
+<<<<<<< HEAD
     return JsonResponse({'results': foods})
 
 @login_required
@@ -479,3 +483,6 @@ def suggestion(request):
     return render(request, 'suggestions.html', {
         'suggestions': ai_suggestions,
     })
+=======
+    return JsonResponse({'results': foods})
+>>>>>>> 9ceb8997f7cbbd8d77d84721d272371b71027f0d
