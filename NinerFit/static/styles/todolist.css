@@ -14,7 +14,6 @@
     border-bottom: 1px solid lightgray;
 }
 
-/* testing-monkpeh branch */
 .todolist-container {
     padding: 40px 20px;
 }
@@ -124,4 +123,12 @@
 .task-actions form {
     display: inline-block;
     margin-left: 10px;
+}
+
+.btn-dark {
+    background-color: #3f4156;
+}
+
+.btn-dark:hover {
+    background-color: #585b7a;
 }

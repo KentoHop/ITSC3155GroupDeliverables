@@ -38,6 +38,7 @@ header {
         text-decoration: none;
         border-radius: 5px;
         padding: 5px;
+        transition: 0.3s;
     }
     > a:hover {
         background-color: #585b7a;

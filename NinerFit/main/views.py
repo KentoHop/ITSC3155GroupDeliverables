@@ -23,7 +23,7 @@ def home(request):
     todos = TodoItem.objects.filter(user=request.user)
     health_data = calculate_health_data(request.user)
 
-    # Added suggestions to home page
+    # Generate suggestions
     ai_suggestions = generate_health_suggestion(
         calories=request.session.get('suggestion_calories'),
         sleep=request.session.get('suggestion_sleep'),
@@ -34,19 +34,9 @@ def home(request):
 
     context = {
         'todos': todos,
-        'health_score': health_data['health_score'],
-        'big_circle_circumference': health_data['big_circle_circumference'],
-        'score_offset': health_data['score_offset'],
-        'calorie_percent': health_data['calorie_percent'],
-        'water_percent': health_data['water_percent'],
-        'sleep_percent': health_data['sleep_percent'],
-        'calorie_offset': health_data['calorie_offset'],
-        'water_offset': health_data['water_offset'],
-        'sleep_offset': health_data['sleep_offset'],
-        'score_label': health_data['score_label'],
-        'circumference': health_data['circumference'],
         'suggestions': ai_suggestions,
     }
+    context.update(health_data)
     return render(request, 'home.html', context)
 
 
@@ -97,53 +87,8 @@ def health_score_view(request):
     # Store in session for suggestions
     request.session['suggestion_calories'] = total_calories
 
-    goal_calories = 2000
-    goal_water = 8
-    goal_sleep = 8
-    calorie_percent = round(min(total_calories / goal_calories, 1) * 100, 2) if goal_calories > 0 else 0
-    water_percent = round(min(entry.water / goal_water, 1) * 100, 2) if goal_water > 0 else 0
-    sleep_percent = round(min(entry.sleep / goal_sleep, 1) * 100, 2) if goal_sleep > 0 else 0
-    health_score = int((calorie_percent + water_percent + sleep_percent) / 3)  # Added sleep to calculation
-
-    radius = 50
-    circumference = 2 * math.pi * radius
-    big_circle_circumference = 2 * math.pi * (radius + 30)
-    calorie_offset = round(circumference * (1 - (calorie_percent / 100)), 2)
-    water_offset = round(circumference * (1 - (water_percent / 100)), 2)
-    sleep_offset = round(circumference * (1 - (sleep_percent / 100)), 2)
-    score_offset = round(big_circle_circumference * (1 - (health_score / 100)), 2)
-
-    if health_score >= 100:
-        score_label = "Perfect"
-    elif health_score >= 80:
-        score_label = "Excellent"
-    elif health_score >= 60:
-        score_label = "Good"
-    elif health_score >= 40:
-        score_label = "Fair"
-    else:
-        score_label = "Poor"
-
-    context = {
-        'total_calories': total_calories,
-        'water': entry.water,
-        'sleep': entry.sleep,
-        'goal_calories': goal_calories,
-        'goal_water': goal_water,
-        'goal_sleep': goal_sleep,
-        'calorie_percent': calorie_percent,
-        'water_percent': water_percent,
-        'sleep_percent': sleep_percent,
-        'health_score': health_score,
-        'calorie_offset': calorie_offset,
-        'water_offset': water_offset,
-        'score_offset': score_offset,
-        'sleep_offset': sleep_offset,
-        'score_label': score_label,
-        'circumference': round(circumference, 2),
-        'big_circle_circumference': round(big_circle_circumference, 2),
-    }
-
+    context = {}
+    context.update(health_data)
     return render(request, 'health_score.html', context)
 
 def calculate_health_data(user):
@@ -180,10 +125,12 @@ def calculate_health_data(user):
         score_label = "Poor"
 
     return {
-        'calories': entry.calories,
+        'total_calories': total_calories,
         'water': entry.water,
+        'sleep': entry.sleep,
         'goal_calories': goal_calories,
         'goal_water': goal_water,
+        'goal_sleep': goal_sleep,
         'calorie_percent': calorie_percent,
         'water_percent': water_percent,
         'sleep_percent': sleep_percent,
