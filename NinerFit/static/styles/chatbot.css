@@ -68,3 +68,11 @@ body, html {
     flex-direction: column;
     margin: 1em 12.5%;
 }
+
+.btn-dark {
+    background-color: #3f4156;
+}
+
+.btn-dark:hover {
+    background-color: #585b7a;
+}
