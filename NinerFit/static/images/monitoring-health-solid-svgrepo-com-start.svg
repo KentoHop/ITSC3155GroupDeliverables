@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   width="1200"
+   height="1800"
+   viewBox="0 0 72 108"
+   version="1.1"
+   id="svg2"
+   xml:space="preserve"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+     id="defs2" /><g
+     id="g6"
+     data-name="Layer 2"
+     transform="translate(12.906008,23.63308)"><g
+       id="g7"
+       style="stroke:#ffffff;stroke-width:1.00002;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"><rect
+         style="fill:#005035;fill-opacity:1;stroke:none;stroke-width:1.00002;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+         id="rect7"
+         width="45.074463"
+         height="45.074463"
+         x="25.546198"
+         y="-7.1136389"
+         transform="rotate(45)" /><rect
+         style="fill:#005035;fill-opacity:1;stroke:none;stroke-width:1.00002;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+         id="rect6"
+         width="63.691994"
+         height="69.223137"
+         x="-8.7520046"
+         y="-24.303522" /></g><g
+       id="g3"
+       data-name="invisible box"><rect
+         width="48"
+         height="48"
+         fill="none"
+         id="rect2"
+         x="0"
+         y="0" /></g><g
+       id="g5"
+       data-name="Health Icons"
+       transform="matrix(0.71837219,0,0,0.71837219,0.73977105,9.9481451)"
+       style="stroke:none;stroke-width:1.41988;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"><g
+         id="g4"
+         style="stroke:none;stroke-width:1.41988;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"><path
+           d="M 43,4 H 5 A 2.9,2.9 0 0 0 2,7 v 11.9 h 5.3 l 1.8,-3.7 a 1.9,1.9 0 0 1 1.8,-1.1 2.1,2.1 0 0 1 1.8,1.1 l 2.9,6.1 4.8,-10.2 a 2,2 0 0 1 3.6,0 l 3.7,7.8 H 30 a 2,2 0 0 1 0,4 h -3.6 a 2.2,2.2 0 0 1 -1.8,-1.2 l -2.4,-5 -4.8,10.2 A 2.1,2.1 0 0 1 15.6,28 1.9,1.9 0 0 1 13.8,26.9 l -2.9,-6.1 -0.5,0.9 A 2,2 0 0 1 8.6,22.9 H 2 V 35 a 3,3 0 0 0 3,3 h 38 a 3,3 0 0 0 3,-3 V 7 A 2.9,2.9 0 0 0 43,4 Z M 29.4,31.4 A 2,2 0 0 1 28,32 H 24 A 2,2 0 0 1 22,30 1.7,1.7 0 0 1 22.6,28.6 2,2 0 0 1 24,28 h 4 a 2,2 0 0 1 2,2 1.7,1.7 0 0 1 -0.6,1.4 z m 10,0 A 2,2 0 0 1 38,32 H 34 A 2,2 0 0 1 32,30 1.7,1.7 0 0 1 32.6,28.6 2,2 0 0 1 34,28 h 4 a 2,2 0 0 1 2,2 1.7,1.7 0 0 1 -0.6,1.4 z"
+           id="path3"
+           style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.41988;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" /><path
+           d="M 37,40 H 11 a 2,2 0 0 0 0,4 h 26 a 2,2 0 0 0 0,-4 z"
+           id="path4"
+           style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.41988;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" /></g><path
+         d="m 24.726781,25.412292 0.72948,-0.7198 c 0.268276,-0.264718 0.686803,-0.275561 0.934803,-0.02423 l 2.694277,2.730504 c 0.248001,0.251337 0.231562,0.66968 -0.03671,0.934395 l -0.729481,0.719801 c 4.855072,4.186865 9.107912,5.383689 8.393939,6.08819 -0.741462,0.731624 -7.842344,-1.149751 -11.905603,-4.419461 l -0.05725,0.05649 c -0.268267,0.264713 -0.686791,0.27556 -0.934793,0.02422 L 22.91735,29.892234 c -0.248001,-0.251337 -0.231562,-0.66968 0.03671,-0.934396 l 0.05692,-0.05615 c -3.21482,-4.106896 -5.001193,-11.23227 -4.259729,-11.963893 0.713973,-0.704502 1.853892,3.563945 5.975541,8.474499 z m 4.444518,0.704097 -1.496823,-1.516947 c -0.275556,-0.279264 -0.272551,-0.729032 0.0067,-1.00459 L 38.046991,13.366578 c 0.698155,-0.688895 1.82258,-0.681386 2.511472,0.01677 v 0 c 0.688893,0.698157 0.681384,1.822581 -0.01677,2.511473 L 30.175887,26.123098 c -0.279263,0.275557 -0.729034,0.272551 -1.004588,-0.0067 z"
+         fill="#4a4a4a"
+         fill-rule="evenodd"
+         id="path5"
+         style="fill:#a49665;fill-opacity:1;stroke:none;stroke-width:0.827114;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+         transform="matrix(1.7166632,0,0,1.7166632,-6.9253676,-33.974654)" /></g></g></svg>

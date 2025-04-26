@@ -1,49 +1,29 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to NinerFit</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-            flex-direction: column;
-        }
-        h1 {
-            color: #333;
-        }
-        .btn {
-            padding: 10px 20px;
-            font-size: 16px;
-            color: white;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            margin-top: 20px;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <link href="{% static 'styles/start.css' %}" rel="stylesheet">
 </head>
 <body>
+    <div class="start-logo">
+        <img src="{% static 'images/monitoring-health-solid-svgrepo-com-start.svg' %}" alt="NinerFit logo." width="200" height="200">
+    </div>
+    <div class="start-container">
+        <h1>Welcome to NinerFit</h1>
+        <p>Your fitness journey starts here.</p>
 
-    <h1>Welcome to NinerFit</h1>
-    <p>Your fitness journey starts here.</p>
+        {% if user.is_authenticated %}
+        <a href="{% url 'home' %}" class="btn">Go to Home</a>
+        {% else %}
+        <a href="{% url 'login' %}" class="btn">Go to Login</a>
+        <a href="{% url 'register' %}" class="btn">Go to Register</a>
+        {% endif %}
+    </div>
 
-    {% if user.is_authenticated %}
-    <a href="{% url 'home' %}" class="btn">Go to Home</a>
-    {% else %}
-    <a href="{% url 'login' %}" class="btn">Go to Login</a>
-    <a href="{% url 'register' %}" class="btn">Go to Register</a>
-    {% endif %}
-
+    <img class="background-image" src="{% static 'images/image_bg_cityline_desktop.jpg' %}">
 </body>
 </html>
