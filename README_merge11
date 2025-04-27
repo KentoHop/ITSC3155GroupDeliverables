@@ -1,0 +1,3 @@
+- Deleted venv, as it should have been added to .gitignore. Should build locally using `pip install -r requirements.txt`.
+  - More on requirements.txt: https://stackoverflow.com/questions/7225900/how-can-i-install-packages-using-pip-according-to-the-requirements-txt-file-from
+- Make sure to fix migrations when building project: https://stackoverflow.com/questions/29253399/how-to-reset-migrations-in-django-1-7
