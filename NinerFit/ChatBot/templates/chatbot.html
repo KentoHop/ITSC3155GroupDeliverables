@@ -4,13 +4,14 @@
 
 {% block styles %}<link href="{% static 'styles/chatbot.css' %}" rel="stylesheet">{% endblock %}
 
+{% block title %}{{user.username}}'s Therapy Room{% endblock %}
 
 {% block content %}
 <div class="chat-container">
   <div class="card flex-grow-1">
-    <div class="card-header custom-header">{{user.username}}'s Therapy Room</div>
+    <div class="card-header bg-primary text-white">{{user.username}}'s Therapy Room</div>
     {% if user.is_authenticated %}
-    <div class="card-header bg-primary text-white"><b>Welcome, {{user.username}}</b> </div>
+    <div class="card-header"><b>Welcome, {{user.username}}</b> </div>
     {% endif %}
     <div class="card-body messages-box">
       
