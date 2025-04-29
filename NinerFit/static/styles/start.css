@@ -32,7 +32,10 @@ h1 {
 }
 .start-container {
     position: absolute;
-    top: 35vh;
+    top: 30vh;
+}
+.start-textblock {
+    width: 35em;
 }
 .background-image {
     position: absolute;
