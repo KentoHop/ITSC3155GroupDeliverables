@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import date
+from django.utils import timezone
 
 class DailyEntry(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -37,3 +38,13 @@ class FoodLog(models.Model):
 
     def __str__(self):
         return f"{self.food} - {self.calories} kcal"
+    
+class DailyLog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField(default=timezone.now)
+    calories = models.PositiveIntegerField()
+    water_cups = models.PositiveIntegerField()
+    sleep_hours = models.DecimalField(max_digits=4, decimal_places=1)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.date}"

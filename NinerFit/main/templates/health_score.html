@@ -20,12 +20,31 @@
         font-size: 2.5em;
     }
 
+    .health-header p {
+        font-size: 1.1em;
+        color: #555;
+    }
+
+    hr {
+        margin: 40px 0;
+        border: none;
+        height: 1px;
+        background: #ddd;
+    }
+
     .ring-grid {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
-        gap: 30px;
+        gap: 40px;
         margin-top: 30px;
+    }
+
+    .metric-info {
+        text-align: center;
+        margin-top: 10px;
+        font-size: 0.95em;
+        color: #555;
     }
 
     circle.bg {
@@ -53,7 +72,7 @@
     }
 
     .log-form {
-        margin-top: 30px;
+        margin-top: 50px;
         text-align: center;
     }
 
@@ -61,8 +80,9 @@
         background-color: #007bff;
         color: white;
         border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
+        padding: 12px 24px;
+        border-radius: 6px;
+        font-size: 16px;
         cursor: pointer;
     }
 
@@ -81,7 +101,21 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-bottom: 20px;
+        margin-bottom: 40px;
+    }
+
+    .tips {
+        margin-top: 40px;
+        padding: 20px;
+        background: #fff3cd;
+        border-left: 5px solid #ffeeba;
+        border-radius: 8px;
+        color: #856404;
+        font-size: 1em;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
     }
 </style>
 {% endblock %}
@@ -90,7 +124,7 @@
 <div class="health-container">
     <div class="health-header">
         <h1>NinerFit</h1>
-        <p>Health Score</p>
+        <p>Track your daily health habits and watch your score rise!</p>
     </div>
 
     <div class="centered-ring">
@@ -128,7 +162,8 @@
         </div>
     </div>
 
-    <!-- Sub-metric Rings -->
+    <hr>
+
     <div class="ring-grid">
         <!-- Calories -->
         <div class="progress-ring">
@@ -136,9 +171,12 @@
                 <circle class="bg" cx="60" cy="60" r="50" />
                 <circle class="progress" cx="60" cy="60" r="50"
                         style="stroke: #28a745; stroke-dasharray: {{ circumference }}; stroke-dashoffset: {{ calorie_offset }};" />
-                <text x="50%" y="40%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'calorie_detail' %}'">{{ calorie_percent }}%</text>
-                <text x="50%" y="58%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'calorie_detail' %}'">Calories</text>
+                <text x="50%" y="40%" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'calorie_detail' %}'">{{ calorie_percent }}%</text>
+                <text x="50%" y="58%" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'calorie_detail' %}'">Calories</text>
             </svg>
+            <div class="metric-info">
+                Goal: {{ calorie_goal }} kcal
+            </div>
         </div>
 
         <!-- Water -->
@@ -147,9 +185,12 @@
                 <circle class="bg" cx="60" cy="60" r="50" />
                 <circle class="progress" cx="60" cy="60" r="50"
                         style="stroke: #007bff; stroke-dasharray: {{ circumference }}; stroke-dashoffset: {{ water_offset }};" />
-                <text x="50%" y="40%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'water_detail' %}'">{{ water_percent }}%</text>
-                <text x="50%" y="58%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'water_detail' %}'">Water</text>
+                <text x="50%" y="40%" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'water_detail' %}'">{{ water_percent }}%</text>
+                <text x="50%" y="58%" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'water_detail' %}'">Water</text>
             </svg>
+            <div class="metric-info">
+                Goal: {{ water_goal }} cups
+            </div>
         </div>
 
         <!-- Sleep -->
@@ -158,10 +199,29 @@
                 <circle class="bg" cx="60" cy="60" r="50" />
                 <circle class="progress" cx="60" cy="60" r="50"
                         style="stroke: #6c757d; stroke-dasharray: {{ circumference }}; stroke-dashoffset: {{ sleep_offset }};" />
-                <text x="50%" y="40%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'sleep_detail' %}'">{{ sleep_percent }}%</text>
-                <text x="50%" y="58%" text-anchor="middle" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'sleep_detail' %}'">Sleep</text>
+                <text x="50%" y="40%" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'sleep_detail' %}'">{{ sleep_percent }}%</text>
+                <text x="50%" y="58%" dy=".3em" style="transform: rotate(90deg);" onclick="window.location.href='{% url 'sleep_detail' %}'">Sleep</text>
             </svg>
+            <div class="metric-info">
+                Goal: {{ sleep_goal }} hrs
+            </div>
         </div>
     </div>
+
+    {% if health_score < 60 %}
+    <div class="tips">
+        <h3>Tips to Improve:</h3>
+        <ul style="list-style: none; padding-left: 0;">
+            <li>• Try to drink more water today</li>
+            <li>• Get at least 7 hours of sleep</li>
+            <li>• Eat a balanced meal with fruits and veggies</li>
+        </ul>
+    </div>
+    {% endif %}
+
+    <div class="log-form">
+        <button style="background-color: #6c757d;" onclick="window.location.href='{% url 'log_history' %}'">View Log History</button>
+    </div>
+    
 </div>
 {% endblock %}

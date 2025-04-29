@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Daily Log - NinerFit{% endblock %}
+
+{% block styles %}
+<style>
+    .health-container {
+        max-width: 500px;
+        margin: 50px auto;
+        background: white;
+        padding: 40px 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .health-container h1 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #007bff;
+        font-size: 2.5em;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        margin-bottom: 8px;
+        font-weight: bold;
+        color: #555;
+        font-size: 1em;
+    }
+
+    input[type="number"] {
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 1em;
+    }
+
+    button[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        padding: 12px;
+        font-size: 1.1em;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="health-container">
+    <h1>Daily Log</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label>Calories Eaten:</label>
+        <input type="number" name="calories" required>
+
+        <label>Water Drank (cups):</label>
+        <input type="number" name="water" required>
+
+        <label>Sleep Hours:</label>
+        <input type="number" step="0.1" name="sleep" required>
+
+        <button type="submit">Submit Log</button>
+    </form>
+</div>
+
+<div style="text-align: center; margin-top: 20px;">
+    <a href="{% url 'log_history' %}" style="
+        background-color: #6c757d;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 16px;
+        display: inline-block;
+        margin-top: 10px;
+    ">
+        View Log History
+    </a>
+</div>
+
+{% endblock %}

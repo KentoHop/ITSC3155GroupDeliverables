@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from datetime import date, timedelta
-from .models import DailyEntry, FoodLog
+from .models import DailyEntry, FoodLog, DailyLog
 import math
 from django.conf import settings
 import requests
@@ -36,10 +36,15 @@ def health_score_view(request):
     goal_calories = 2000
     goal_water = 8
     goal_sleep = 8
+
+    calorie_weight = 0.4
+    water_weight = 0.3
+    sleep_weight = 0.3
+
     calorie_percent = round(min(total_calories / goal_calories, 1) * 100, 2) if goal_calories > 0 else 0
     water_percent = round(min(entry.water / goal_water, 1) * 100, 2) if goal_water > 0 else 0
     sleep_percent = round(min(entry.sleep / goal_sleep, 1) * 100, 2) if goal_sleep > 0 else 0
-    health_score = int((calorie_percent + water_percent) / 2)
+    health_score = int((calorie_percent * calorie_weight) + (water_percent * water_weight) + (sleep_percent * sleep_weight))
 
     radius = 50
     circumference = 2 * math.pi * radius
@@ -347,3 +352,64 @@ def usda_food_search(request):
         })
 
     return JsonResponse({'results': foods})
+
+
+def daily_log(request):
+    today = date.today()
+    user = request.user
+
+    entry, _ = DailyEntry.objects.get_or_create(user=user, date=today)
+
+    total_calories = FoodLog.objects.filter(user=user, date=today).aggregate(Sum('calories'))['calories__sum'] or 0
+
+    daily_log, created = DailyLog.objects.get_or_create(user=user, date=today)
+
+    daily_log.calroies = total_calories
+    daily_log.water_cups = entry.water
+    daily_log.sleep_hours = entry.sleep
+    daily_log.save()
+
+    return redirect('log_history')
+
+def log_history(request):
+    user = request.user
+    today = date.today()
+
+    if request.method == 'POST':
+        if 'generate_dummy_logs' in request.POST:
+            for i in range(1, 7):
+                log_date = today - timedelta(days=i)
+                calories = random.randint(1500, 2500)
+                water = random.randint(4, 12)
+                sleep = round(random.uniform(5.0, 9.5), 1)
+
+                DailyLog.objects.update_or_create(
+                    user=user,
+                    date=log_date,
+                    defaults={
+                        'calories': calories,
+                        'water_cups': water,
+                        'sleep_hours': sleep,
+                    }
+                )
+
+
+        elif 'reset_today_only' in request.POST:
+            DailyLog.objects.filter(user=user).exclude(date=today).delete()
+
+            entry, _ = DailyEntry.objects.get_or_create(user=user, date=today)
+
+            total_calories = FoodLog.objects.filter(user=user, date=today).aggregate(Sum('calories'))['calories__sum'] or 0
+
+            DailyLog.objects.update_or_create(
+                user=user,
+                date=today,
+                defaults={
+                    'calories': total_calories,
+                    'water_cups': entry.water,
+                    'sleep_hours': entry.sleep,
+                }
+            )
+
+    logs = DailyLog.objects.filter(user=user).order_by('-date')
+    return render(request, 'log_history.html', {'logs': logs})
