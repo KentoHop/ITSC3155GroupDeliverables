@@ -1,49 +1,15 @@
-NinerFit/Authentication/__pycache__/__init__.cpython-313.pyc
-NinerFit/Authentication/__pycache__/admin.cpython-313.pyc
-NinerFit/Authentication/__pycache__/apps.cpython-313.pyc
-NinerFit/Authentication/__pycache__/models.cpython-313.pyc
-NinerFit/Authentication/__pycache__/urls.cpython-313.pyc
-NinerFit/Authentication/__pycache__/views.cpython-313.pyc
-NinerFit/Authentication/migrations/__pycache__/__init__.cpython-313.pyc
-NinerFit/ChatBot/__pycache__/__init__.cpython-313.pyc
-NinerFit/ChatBot/__pycache__/admin.cpython-313.pyc
-NinerFit/ChatBot/__pycache__/apps.cpython-313.pyc
-NinerFit/ChatBot/__pycache__/models.cpython-313.pyc
-NinerFit/ChatBot/__pycache__/urls.cpython-313.pyc
-NinerFit/ChatBot/__pycache__/views.cpython-313.pyc
-NinerFit/ChatBot/migrations/__pycache__/__init__.cpython-313.pyc
-NinerFit/ChatBot/migrations/__pycache__/0001_initial.cpython-313.pyc
-NinerFit/main/__pycache__/__init__.cpython-313.pyc
-NinerFit/main/__pycache__/admin.cpython-313.pyc
-NinerFit/main/__pycache__/apps.cpython-313.pyc
-NinerFit/main/__pycache__/models.cpython-313.pyc
-NinerFit/main/__pycache__/urls.cpython-313.pyc
-NinerFit/main/__pycache__/views.cpython-313.pyc
-NinerFit/main/migrations/__pycache__/__init__.cpython-313.pyc
-NinerFit/media/profile_images/93a140d93cc0616a7e8084200ec40c17_LbnLMAw.jpeg
-NinerFit/media/profile_images/93a140d93cc0616a7e8084200ec40c17.jpeg
-NinerFit/NinerFit/__pycache__/__init__.cpython-313.pyc
-NinerFit/NinerFit/__pycache__/settings.cpython-313.pyc
-NinerFit/NinerFit/__pycache__/urls.cpython-313.pyc
-NinerFit/NinerFit/__pycache__/wsgi.cpython-313.pyc
-NinerFit/Profiles/__init__.py
-NinerFit/Profiles/__pycache__/__init__.cpython-313.pyc
-NinerFit/Profiles/__pycache__/admin.cpython-313.pyc
-NinerFit/Profiles/__pycache__/apps.cpython-313.pyc
-NinerFit/Profiles/__pycache__/forms.cpython-313.pyc
-NinerFit/Profiles/__pycache__/models.cpython-313.pyc
-NinerFit/Profiles/__pycache__/signals.cpython-313.pyc
-NinerFit/Profiles/__pycache__/urls.cpython-313.pyc
-NinerFit/Profiles/__pycache__/views.cpython-313.pyc
-NinerFit/Profiles/migrations/__init__.py
-NinerFit/Profiles/migrations/0001_initial.py
-NinerFit/Profiles/migrations/__pycache__/__init__.cpython-313.pyc
-NinerFit/Profiles/migrations/__pycache__/0001_initial.cpython-313.pyc
-NinerFit/main/migrations/0001_initial.py
-NinerFit/main/migrations/0002_dailyentry_sleep.py
-NinerFit/main/migrations/0003_foodlog.py
-NinerFit/main/migrations/0004_foodlog_carbs_foodlog_fat_foodlog_fiber_and_more.py
-NinerFit/main/migrations/__pycache__/__init__.cpython-39.pyc
-NinerFit/main/migrations/__pycache__/__init__.cpython-312.pyc
-venv/
+Design Sprint/.DS_Store
+Design Sprint/DesignSprint1/.DS_Store
+Design Sprint/DesignSprint1/Nguyen-DesSprintDay 1/Assignment 5-2_ Benjamin Nguyen.pdf
+Design Sprint/DesignSprint3/.DS_Store
+Design Sprint/DesignSprint3/Kento_Hopkins_Design_Sprint_3.pdf
+Design Sprint/DesignSprint3/Nguyen-Benjamin Design Sprint 3.png
+
+# Environments
+.env
+.venv
 env/
+venv/
+ENV/
+env.bak/
+venv.bak/

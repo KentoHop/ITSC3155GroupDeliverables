@@ -1,0 +1,101 @@
+.health-container {
+    padding: 40px 20px;
+    background-color: #f9f9f9;
+}
+
+.health-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.health-header h1 {
+    color: #212529;
+    font-size: 2.5em;
+}
+
+.ring-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+circle.bg {
+    fill: none;
+    stroke: #e6e6e6;
+    stroke-width: 12;
+}
+
+circle.progress {
+    fill: none;
+    stroke-width: 12;
+    stroke-linecap: round;
+    stroke-dasharray: 502;
+    stroke-dashoffset: 502;
+    transition: stroke-dashoffset 0.5s ease;
+}
+
+svg text {
+    fill: black;
+    font-size: 16px;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    transform-origin: center;
+    cursor: pointer;
+}
+
+.log-form {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.log-form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.log-form button:hover {
+    background-color: #0056b3;
+}
+
+.badge {
+    color: white;
+    padding: 5px 12px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.centered-ring {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.health-score-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.suggestions-column {
+    border-left: 1px solid lightgray;
+}
+
+/* Mobile styles */
+@media (max-width:768px) and (max-height:1024px) {
+    .health-score-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .suggestions-column {
+        border-left: transparent;
+        border-top: 1px solid lightgray;
+    }
+}

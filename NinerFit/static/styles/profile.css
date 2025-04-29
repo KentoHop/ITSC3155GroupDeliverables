@@ -1,0 +1,35 @@
+.rounded-circle {
+    image-resolution: from-image;
+}
+
+.d-flex {
+    flex-direction: row;
+    width: fit-content;
+}
+
+.gap-3 {
+    gap: 20px;
+}
+
+.mb-0 {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-dark {
+    background-color: #3f4156;
+}
+
+.btn-dark:hover {
+    background-color: #585b7a;
+}
+
+.btn-outline-dark {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-outline-dark:hover {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}

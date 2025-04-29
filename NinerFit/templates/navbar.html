@@ -4,27 +4,38 @@
 
 <header>
     <nav class="navbar-container">
-
-        <a class="navbar-logo" href="{% url 'start' %}" style="color: #036c1b;">
-            <img src="{% static 'images/heart-logo.svg' %}" alt="NinerFit logo." width="50" height="50">
-            <h2>NinerFit</h2>
-        </a>
-        
+        <div class="navbar-header">
+            <a class="navbar-logo" href="{% url 'start' %}">
+                <img src="{% static 'images/monitoring-health-solid-svgrepo-com-white.svg' %}" alt="NinerFit logo." width="70" height="70">
+                <h1>NinerFit</h1>
+            </a>
+            <button class="navbar-toggler">
+                <div></div>
+                <div></div>
+                <div></div> 
+            </button>
+        </div>
         <div class="navbar-links">
             {% if request.user.is_authenticated %}
-            <a href="{% url 'home' %}" style="color: #036c1b;"">Home</a>
-            <a href="{% url 'health_score' %}" style="color: #036c1b;">Health Score</a>
-            <a href="{% url 'to-do-list' %}" style="color: #036c1b;">To-do List</a>
-            <a href="{% url 'suggestions' %}" style="color: #036c1b;">Suggestions</a>
-            <a href="{% url 'chatbot' %}" style="color: #036c1b;">Chatbot</a>
-            <a href="{% url 'profile' %}" style="color: #036c1b;">Profile</a>
-            <a href="" style="color: #036c1b;">Settings</a>
-            <a href="{% url 'logout' %}" style="color: #FFD700;">Logout</a>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'health_score' %}">Health Score</a>
+            <a href="{% url 'to-do-list' %}">To-do List</a>
+            <a href="{% url 'chatbot' %}">Chatbot</a>
+            <a href="{% url 'profile' %}">Profile</a>
+            <a href="{% url 'logout' %}">Logout</a>
             {% else %}
-            <a href="{% url 'login' %}" style="color: #FFD700;">Login</a>
-            <a href="{% url 'register' %}" style="color: #FFD700;">Register</a>
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
             {% endif %}
         </div>
-
     </nav>
 </header>
+
+<script>
+    const navbarToggler = document.querySelector('.navbar-toggler');
+    const navbarLinks = document.querySelector('.navbar-links');
+
+    navbarToggler.addEventListener('click', () => {
+    navbarLinks.classList.toggle('show');
+    });
+</script>
