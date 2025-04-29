@@ -100,10 +100,15 @@ def calculate_health_data(user):
     goal_calories = 2000
     goal_water = 8
     goal_sleep = 8
+
+    calorie_weight = 0.4
+    water_weight = 0.3
+    sleep_weight = 0.3
+
     calorie_percent = round(min(total_calories / goal_calories, 1) * 100, 2) if goal_calories > 0 else 0
     water_percent = round(min(entry.water / goal_water, 1) * 100, 2) if goal_water > 0 else 0
     sleep_percent = round(min(entry.sleep / goal_sleep, 1) * 100, 2) if goal_sleep > 0 else 0
-    health_score = int((calorie_percent + water_percent) / 2)
+    health_score = int((calorie_percent * calorie_weight) + (water_percent * water_weight) + (sleep_percent * sleep_weight))
 
     radius = 50
     circumference = 2 * math.pi * radius
