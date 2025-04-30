@@ -42,6 +42,7 @@ To make AI features accessible:
 2. Follow the instructions on `https://platform.openai.com/docs/api-reference/authentication` to create a new secret key for your organization.
 
     > The OpenAI API uses API keys for authentication. Create, manage, and learn more about API keys in your _organization settings_.
+    >
     > Remember that your API key is a secret! Do not share it with others or expose it in any client-side code (browsers, apps). API keys should be securely loaded from an environment variable or key management service on the server.
 
 3. Paste the API key you created within the files for `NinerFit/ChatBot/views.py` and `NinerFit/main/suggestion_generate.py`.
